@@ -1,0 +1,201 @@
+.sentence-creator {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem 2rem 2.5rem;
+  border: 4px solid #000;
+  border-radius: 16px;
+  background: #fff;
+}
+
+.sentence-creator__title {
+  text-align: center;
+  font-size: clamp(1.75rem, 5vw, 2.5rem);
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  margin: 0 0 2rem;
+  color: #000;
+}
+
+.sentence-creator__words {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem 1rem;
+  justify-content: center;
+}
+
+.sentence-creator__word {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  width: 130px;
+}
+
+.sentence-creator__word-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.sentence-creator__word-controls button {
+  width: 1.75rem;
+  height: 1.75rem;
+  border: 2px solid #000;
+  border-radius: 6px;
+  background: #fff;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.sentence-creator__word-controls button:hover:not(:disabled),
+.sentence-creator__word-controls button:focus-visible:not(:disabled) {
+  background: #f3f3f3;
+  outline: 2px solid #1a73e8;
+  outline-offset: 1px;
+}
+
+.sentence-creator__word-controls button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.sentence-creator__word-remove {
+  color: #b3261e;
+  border-color: #b3261e !important;
+}
+
+.sentence-creator__word-remove:hover:not(:disabled),
+.sentence-creator__word-remove:focus-visible:not(:disabled) {
+  background: #fbe4e1 !important;
+}
+
+/* Boxes reuse the same PecSlot pattern as Single PEC Selector, sized
+   down a bit so up to 20 can wrap comfortably in the row. */
+.sentence-creator .pec-slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  width: 100%;
+}
+
+.sentence-creator .pec-slot__box {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border: 3px solid #000;
+  border-radius: 8px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.sentence-creator .pec-slot__box:hover,
+.sentence-creator .pec-slot__box:focus-visible {
+  background: #f3f3f3;
+  outline: 3px solid #1a73e8;
+  outline-offset: 2px;
+}
+
+.sentence-creator .pec-slot__box img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 0.5rem;
+}
+
+.sentence-creator .pec-slot__placeholder {
+  font-size: 2rem;
+  font-weight: 300;
+  color: #bbb;
+  line-height: 1;
+}
+
+.sentence-creator .pec-slot__footer {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #000;
+  text-align: center;
+}
+
+.sentence-creator .pec-slot__label {
+  text-align: center;
+  word-break: break-word;
+}
+
+.sentence-creator__add-word {
+  display: block;
+  margin: 1.5rem auto 0;
+  padding: 0.5rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 700;
+  border: 3px dashed #000;
+  border-radius: 8px;
+  background: #fff;
+  cursor: pointer;
+}
+
+.sentence-creator__add-word:hover:not(:disabled),
+.sentence-creator__add-word:focus-visible:not(:disabled) {
+  background: #f3f3f3;
+  outline: 3px solid #1a73e8;
+  outline-offset: 2px;
+}
+
+.sentence-creator__add-word:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.sentence-creator__sentence-bar {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 2px solid #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  text-align: center;
+  flex-wrap: wrap;
+}
+
+.sentence-creator__clear {
+  display: block;
+  margin: 1.5rem auto 0;
+  padding: 0.5rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border: 2px solid #000;
+  border-radius: 8px;
+  background: #fff;
+  cursor: pointer;
+}
+
+.sentence-creator__clear:hover,
+.sentence-creator__clear:focus-visible {
+  background: #f3f3f3;
+  outline: 3px solid #1a73e8;
+  outline-offset: 2px;
+}
+
+@media (max-width: 480px) {
+  .sentence-creator {
+    padding: 1.5rem 1.25rem 2rem;
+  }
+  .sentence-creator__word {
+    width: 100px;
+  }
+}

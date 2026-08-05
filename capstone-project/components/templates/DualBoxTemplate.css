@@ -1,0 +1,162 @@
+/* First/Then & Consequence/Reward template styling
+   Matches the bold, high-contrast reference: thick black outer frame,
+   large uppercase title with an arrow, two square clickable boxes
+   connected by a thin arrow. */
+
+.dual-box-template {
+  max-width: 720px;
+  margin: 2rem auto;
+  padding: 2rem 2.5rem 2.5rem;
+  border: 4px solid #000;
+  border-radius: 16px;
+  background: #fff;
+}
+
+.dual-box-template__title {
+  text-align: center;
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  margin: 0 0 2.5rem;
+  color: #000;
+}
+
+.dual-box-template__row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.dual-box-template__arrow {
+  flex: 0 0 auto;
+  width: 3rem;
+  height: 2px;
+  background: #000;
+  position: relative;
+  align-self: center;
+}
+.dual-box-template__arrow::after {
+  content: "";
+  position: absolute;
+  right: -1px;
+  top: 50%;
+  width: 0;
+  height: 0;
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+  border-left: 8px solid #000;
+  transform: translateY(-50%);
+}
+
+.dual-box-template .pec-slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1 1 0;
+  max-width: 220px;
+}
+
+.dual-box-template .pec-slot__box {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border: 3px solid #000;
+  border-radius: 8px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.dual-box-template .pec-slot__box:hover,
+.dual-box-template .pec-slot__box:focus-visible {
+  background: #f3f3f3;
+  outline: 3px solid #1a73e8;
+  outline-offset: 2px;
+}
+
+.dual-box-template .pec-slot__box img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 0.75rem;
+}
+
+.dual-box-template .pec-slot__placeholder {
+  font-size: 3rem;
+  font-weight: 300;
+  color: #bbb;
+  line-height: 1;
+}
+
+.dual-box-template .pec-slot__footer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #000;
+}
+
+.dual-box-template .pec-slot__label {
+  text-align: center;
+}
+
+.dual-box-template__sentence-bar {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 2px solid #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.dual-box-template__clear {
+  display: block;
+  margin: 1.5rem auto 0;
+  padding: 0.5rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border: 2px solid #000;
+  border-radius: 8px;
+  background: #fff;
+  cursor: pointer;
+}
+
+.dual-box-template__clear:hover,
+.dual-box-template__clear:focus-visible {
+  background: #f3f3f3;
+  outline: 3px solid #1a73e8;
+  outline-offset: 2px;
+}
+
+@media (max-width: 480px) {
+  .dual-box-template {
+    padding: 1.5rem 1.25rem 2rem;
+  }
+  .dual-box-template__row {
+    flex-direction: column;
+  }
+  .dual-box-template__arrow {
+    width: 2px;
+    height: 2.5rem;
+  }
+  .dual-box-template__arrow::after {
+    right: 50%;
+    top: auto;
+    bottom: -1px;
+    transform: translateX(50%) rotate(90deg);
+  }
+  .dual-box-template .pec-slot {
+    max-width: 260px;
+  }
+}
