@@ -1,0 +1,91 @@
+export const CATEGORIES = [
+  {
+    id: "single-pec-selector",
+    name: "Single PEC Selector",
+    template: "single-select",
+    selectionMode: "single",
+  },
+  {
+    id: "sentence-creator",
+    name: "Sentence Creator",
+    template: "sentence-creator",
+    selectionMode: "multi",
+    maxWords: 20,
+  },
+  {
+    id: "emergency-cards",
+    name: "In An Emergency",
+    template: "emergency",
+    selectionMode: "preset",
+    options: {
+      includeBasicInfo: true,
+      includeMedicalId: true,
+      includeEmergencyContact: true,
+    },
+  },
+  {
+    id: "todays-schedule",
+    name: "Today's Schedule",
+    template: "schedule",
+    selectionMode: "multi",
+    editableByChild: false,
+    persistIfSignedIn: true,
+    allowGuestDownload: true,
+  },
+  {
+    id: "daily-schedule",
+    name: "Daily Task Checklist",
+    template: "schedule",
+    selectionMode: "multi",
+    editableByChild: false,
+    persistIfSignedIn: true,
+    allowGuestDownload: true,
+  },
+  {
+    id: "chore-list",
+    name: "Detailed Daily Chore List",
+    template: "schedule",
+    selectionMode: "multi",
+    editableByChild: false,
+    persistIfSignedIn: true,
+    allowGuestDownload: true,
+  },
+  {
+    id: "weekly-chore-list",
+    name: "Weekly Chore List",
+    template: "weekly-chore",
+    selectionMode: "single-per-day",
+    scheduleRows: [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+      "Sunday",
+    ],
+    editableByChild: false,
+    persistIfSignedIn: true,
+    allowGuestDownload: true,
+  },
+  {
+    id: "first-then",
+    name: "First / Then",
+    template: "dual-box",
+    selectionMode: "single",
+    labels: ["First", "Then"],
+    ttsTemplate: (a, b) => `First ${a}, Then ${b}.`,
+  },
+  {
+    id: "consequence-reward",
+    name: "Consequence / Reward",
+    template: "dual-box",
+    selectionMode: "single",
+    labels: ["Consequence", "Reward"],
+    ttsTemplate: (a, b) => `If ${a}, then ${b}.`,
+  },
+];
+
+export function getCategory(id) {
+  return CATEGORIES.find((c) => c.id === id);
+}
