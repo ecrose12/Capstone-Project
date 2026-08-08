@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useParentMode } from "@/context/ParentModeContext";
 import { createClient } from "@/lib/supabase/client";
+import "./account-page.css";
 
 export default function AccountPage() {
   const { mode, loading: modeLoading } = useParentMode();

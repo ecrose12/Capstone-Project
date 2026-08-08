@@ -1,0 +1,65 @@
+.parent-gate {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 2rem 1.5rem;
+  background: var(--color-bg);
+  border: 3px solid var(--color-border);
+  border-radius: 16px;
+}
+
+.parent-gate h2 {
+  margin: 0 0 0.5rem;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--color-text);
+  text-align: center;
+}
+
+.parent-gate label {
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.parent-gate input {
+  min-height: 3rem;
+  padding: 0.6rem 0.75rem;
+  font-size: 1.05rem;
+  font-family: inherit;
+  color: var(--color-text);
+  background: var(--color-bg);
+  border: 2px solid var(--color-border-subtle);
+  border-radius: 10px;
+}
+
+.parent-gate input:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 1px;
+  border-color: var(--color-focus);
+}
+
+.parent-gate [role="alert"] {
+  color: var(--color-error);
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.parent-gate button {
+  min-height: 3.25rem;
+  margin-top: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #ffffff;
+  background: var(--color-accent-strong);
+  border: 2px solid var(--color-accent-strong);
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.parent-gate button:hover,
+.parent-gate button:focus-visible {
+  filter: brightness(1.1);
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+}

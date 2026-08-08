@@ -1,6 +1,6 @@
-// components/DevicePairing.jsx
 "use client";
 import { useState, useRef } from "react";
+import "./DevicePairing.css";
 
 export default function DevicePairing({ onPaired, onSkip }) {
   const [code, setCode] = useState("");
@@ -9,7 +9,6 @@ export default function DevicePairing({ onPaired, onSkip }) {
   const inputRef = useRef(null);
 
   function handleCodeChange(e) {
-    // Digits only, max 6 — keeps the field forgiving of stray taps
     const digitsOnly = e.target.value.replace(/\D/g, "").slice(0, 6);
     setCode(digitsOnly);
     if (error) setError("");
