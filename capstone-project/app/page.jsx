@@ -2,11 +2,14 @@
 import Link from "next/link";
 import { CATEGORIES } from "@/lib/categories";
 import { useParentMode } from "@/context/ParentModeContext";
+import CategoryIcon from "@/components/CategoryIcon";
+import "./home-page.css";
 
 export default function HomePage() {
-  const { mode, loading } = useParentMode();
-
+  const { mode, familyType, loading } = useParentMode();
   if (loading) return null;
+
+  const isFamilyAccount = familyType === "family";
 
   return (
     <main className="home-page">
@@ -21,6 +24,9 @@ export default function HomePage() {
             className="home-page__category-button"
             aria-label={category.name}
           >
+            <span className="home-page__category-icon">
+              <CategoryIcon id={category.id} />
+            </span>
             <span className="home-page__category-name">{category.name}</span>
           </Link>
         ))}
@@ -28,7 +34,7 @@ export default function HomePage() {
 
       {mode === "parent" && (
         <p className="home-page__mode-notice" role="status">
-          Parent Mode is active.
+          {isFamilyAccount ? "Parent/Caregiver Mode is active." : "You're signed in."}
         </p>
       )}
     </main>

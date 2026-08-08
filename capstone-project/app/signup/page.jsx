@@ -1,13 +1,10 @@
-"use client";
-import { useRouter } from "next/navigation";
 import ParentSignup from "@/components/ParentSignup";
+import "../auth-page.css";
 
 export default function SignupPage() {
-  const router = useRouter();
-
   return (
     <main className="auth-page">
-      <ParentSignup onSuccess={() => router.push("/")} />
+      <ParentSignup />
     </main>
   );
 }
