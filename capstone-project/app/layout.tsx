@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Lexend } from "next/font/google";
 import "./globals.css";
 import { ParentModeProvider } from "@/context/ParentModeContext";
 import { ThemeProvider } from "@/context/ThemeContext";
@@ -12,6 +12,10 @@ const geistSans = Geist({
 });
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
+const lexend = Lexend({
+  variable: "--font-lexend",
   subsets: ["latin"],
 });
 
