@@ -4,11 +4,13 @@ import Link from "next/link";
 import { useParentMode } from "@/context/ParentModeContext";
 import { useTheme } from "@/context/ThemeContext";
 import { createClient } from "@/lib/supabase/client";
+import "./NavMenu.css";
 
 export default function NavMenu() {
-  const { mode, loading: modeLoading } = useParentMode();
+  const { mode, familyType, loading: modeLoading } = useParentMode();
   const { theme, toggleTheme, loading: themeLoading } = useTheme();
   const [open, setOpen] = useState(false);
+  const [accountOpen, setAccountOpen] = useState(false);
   const menuRef = useRef(null);
   const buttonRef = useRef(null);
   const supabase = createClient();
@@ -42,12 +44,19 @@ export default function NavMenu() {
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [open]);
 
+  // Collapse the Account submenu whenever the whole menu closes, so it
+  // doesn't reopen already-expanded next time.
+  useEffect(() => {
+    if (!open) setAccountOpen(false);
+  }, [open]);
+
   async function handleSignOut() {
     await supabase.auth.signOut();
     setOpen(false);
   }
 
   const isParent = mode === "parent";
+  const isFamilyAccount = familyType === "family";
 
   return (
     <nav className="nav-menu">
@@ -65,49 +74,76 @@ export default function NavMenu() {
       </button>
 
       {open && (
-        <div
-          id="nav-menu-dropdown"
-          ref={menuRef}
-          className="nav-menu__dropdown"
-          role="menu"
-        >
-          {/* Home / Categories navigation */}
+        <div id="nav-menu-dropdown" ref={menuRef} className="nav-menu__dropdown" role="menu">
+          {/* Home navigation */}
           <div className="nav-menu__section" role="none">
             <Link href="/" role="menuitem" className="nav-menu__item" onClick={() => setOpen(false)}>
               Home
-            </Link>
-            <Link href="/" role="menuitem" className="nav-menu__item" onClick={() => setOpen(false)}>
-              Categories
             </Link>
           </div>
 
           <hr className="nav-menu__divider" />
 
-          {/* Account section */}
+          {/* Account section — collapsed submenu */}
           <div className="nav-menu__section" role="none">
-            {modeLoading ? null : isParent ? (
+            {!modeLoading && (
               <>
-                <span className="nav-menu__section-label">Account</span>
-                <Link href="/account" role="menuitem" className="nav-menu__item">
-                  My Account
-                </Link>
                 <button
                   type="button"
-                  role="menuitem"
-                  className="nav-menu__item"
-                  onClick={handleSignOut}
+                  className="nav-menu__item nav-menu__account-toggle"
+                  aria-expanded={accountOpen}
+                  aria-controls="nav-menu-account-submenu"
+                  onClick={() => setAccountOpen((prev) => !prev)}
                 >
-                  Sign Out
+                  Account
+                  <span className="nav-menu__account-caret" aria-hidden="true">
+                    {accountOpen ? "▲" : "▼"}
+                  </span>
                 </button>
-              </>
-            ) : (
-              <>
-                <Link href="/login" role="menuitem" className="nav-menu__item">
-                  Log In
-                </Link>
-                <Link href="/signup" role="menuitem" className="nav-menu__item">
-                  Sign Up
-                </Link>
+
+                {accountOpen && (
+                  <div id="nav-menu-account-submenu" className="nav-menu__submenu" role="none">
+                    {isParent ? (
+                      <>
+                        <Link
+                          href="/account"
+                          role="menuitem"
+                          className="nav-menu__item nav-menu__subitem"
+                          onClick={() => setOpen(false)}
+                        >
+                          My Account
+                        </Link>
+                        <button
+                          type="button"
+                          role="menuitem"
+                          className="nav-menu__item nav-menu__subitem"
+                          onClick={handleSignOut}
+                        >
+                          {isFamilyAccount ? "Exit Parent/Caregiver Mode" : "Sign Out"}
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        <Link
+                          href="/login"
+                          role="menuitem"
+                          className="nav-menu__item nav-menu__subitem"
+                          onClick={() => setOpen(false)}
+                        >
+                          Log In
+                        </Link>
+                        <Link
+                          href="/signup"
+                          role="menuitem"
+                          className="nav-menu__item nav-menu__subitem"
+                          onClick={() => setOpen(false)}
+                        >
+                          Sign Up
+                        </Link>
+                      </>
+                    )}
+                  </div>
+                )}
               </>
             )}
           </div>
@@ -116,7 +152,7 @@ export default function NavMenu() {
 
           {/* Settings */}
           <div className="nav-menu__section" role="none">
-            <Link href="/settings" role="menuitem" className="nav-menu__item">
+            <Link href="/settings" role="menuitem" className="nav-menu__item" onClick={() => setOpen(false)}>
               Settings
             </Link>
           </div>
@@ -141,8 +177,17 @@ export default function NavMenu() {
 
           {/* Resources */}
           <div className="nav-menu__section" role="none">
-            <Link href="/resources" role="menuitem" className="nav-menu__item">
+            <Link href="/resources" role="menuitem" className="nav-menu__item" onClick={() => setOpen(false)}>
               Resource Links
+            </Link>
+          </div>
+
+          <hr className="nav-menu__divider" />
+
+          {/* Support */}
+          <div className="nav-menu__section" role="none">
+            <Link href="/support" role="menuitem" className="nav-menu__item" onClick={() => setOpen(false)}>
+              Contact Support
             </Link>
           </div>
         </div>

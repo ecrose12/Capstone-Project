@@ -1,6 +1,6 @@
-// components/GeneratePairingCode.jsx
 "use client";
 import { useState, useEffect, useRef, useCallback } from "react";
+import "./GeneratePairingCode.css";
 
 const CODE_LIFETIME_SECONDS = 10 * 60;
 

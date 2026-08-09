@@ -1,4 +1,5 @@
 import { RESOURCE_LINKS } from "@/lib/resources";
+import "./resources-page.css";
 
 export default function ResourcesPage() {
   return (
