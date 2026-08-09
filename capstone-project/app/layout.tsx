@@ -11,6 +11,10 @@ const lexend = Lexend({
   variable: "--font-lexend",
   subsets: ["latin"],
 });
+const lexend = Lexend({
+  variable: "--font-lexend",
+  subsets: ["latin"],
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://mywordsmatter.app"),
