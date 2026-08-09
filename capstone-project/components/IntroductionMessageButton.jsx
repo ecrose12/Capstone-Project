@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
 import { useParentMode } from "@/context/ParentModeContext";
+import "./IntroductionMessageButton.css";
 
 const STORAGE_KEY = "pecs-intro-message";
 const DEFAULT_MESSAGE =
@@ -13,6 +14,7 @@ export default function IntroductionMessageButton() {
   const [message, setMessage] = useState(DEFAULT_MESSAGE);
   const [locked, setLocked] = useState(false);
   const [hasFamily, setHasFamily] = useState(false);
+  const [familyType, setFamilyType] = useState(null);
   const [loaded, setLoaded] = useState(false);
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState("");
@@ -33,6 +35,7 @@ export default function IntroductionMessageButton() {
 
         setHasFamily(!!result.hasFamily);
         setLocked(!!result.locked);
+        setFamilyType(result.familyType ?? null);
 
         if (result.hasFamily && result.message) {
           setMessage(result.message);
@@ -184,7 +187,7 @@ export default function IntroductionMessageButton() {
               maxLength={300}
             />
 
-            {isParent && hasFamily && (
+            {isParent && hasFamily && familyType === "family" && (
               <label className="intro-message__lock-toggle">
                 <input
                   type="checkbox"

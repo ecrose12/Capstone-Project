@@ -1,0 +1,102 @@
+.device-pairing {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.5rem;
+  margin-top: 1rem;
+  background: var(--color-bg-subtle);
+  border: 2px solid var(--color-border-subtle);
+  border-radius: 14px;
+}
+
+.device-pairing__title {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--color-text);
+  margin: 0;
+}
+
+.device-pairing__instructions {
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+.device-pairing__label {
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.device-pairing__input {
+  min-height: 3rem;
+  width: 100%;
+  padding: 0.6rem 0.75rem;
+  font-size: 1.3rem;
+  letter-spacing: 0.2em;
+  text-align: center;
+  font-family: inherit;
+  color: var(--color-text);
+  background: var(--color-bg);
+  border: 2px solid var(--color-border-subtle);
+  border-radius: 10px;
+}
+
+.device-pairing__input:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 1px;
+}
+
+.device-pairing__error {
+  color: var(--color-error);
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.device-pairing__submit {
+  min-height: 3.25rem;
+  padding: 0.6rem 1.5rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #ffffff;
+  background: var(--color-accent-strong);
+  border: 2px solid var(--color-accent-strong);
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.device-pairing__submit:hover,
+.device-pairing__submit:focus-visible {
+  filter: brightness(1.1);
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.device-pairing__submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.device-pairing__skip {
+  min-height: 2.75rem;
+  padding: 0.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.device-pairing__skip:hover,
+.device-pairing__skip:focus-visible {
+  color: var(--color-text);
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+.device-pairing__skip-note {
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+  margin: 0;
+}

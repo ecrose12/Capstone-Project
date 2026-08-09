@@ -1,7 +1,8 @@
 // components/PecsSearch.jsx
 "use client";
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import { useParentMode } from "@/context/ParentModeContext";
+import "./PecsSearch.css";
 
 export default function PecsSearch({ onSelectCard }) {
   const { mode, loading: modeLoading } = useParentMode();
@@ -9,6 +10,14 @@ export default function PecsSearch({ onSelectCard }) {
   const [results, setResults] = useState([]);
   const [status, setStatus] = useState("idle"); // idle | loading | error | done
   const debounceRef = useRef(null);
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    const id = setTimeout(() => {
+      inputRef.current?.focus();
+    }, 0);
+    return () => clearTimeout(id);
+  }, []);
 
   const runSearch = useCallback(async (term) => {
     if (!term.trim()) {
@@ -18,8 +27,6 @@ export default function PecsSearch({ onSelectCard }) {
     }
     setStatus("loading");
     try {
-      // No "safe" param sent here on purpose — the server reads the
-      // session cookie and decides. The client can't override it.
       const res = await fetch(`/api/symbols/search?q=${encodeURIComponent(term)}`);
       if (!res.ok) throw new Error("Search failed");
       const data = await res.json();
@@ -38,18 +45,18 @@ export default function PecsSearch({ onSelectCard }) {
     debounceRef.current = setTimeout(() => runSearch(value), 400);
   }
 
-  if (modeLoading) return null; // avoid flashing the wrong mode indicator
+  if (modeLoading) return null;
 
   return (
     <div className="pecs-search">
       <div className="pecs-mode-indicator" aria-live="polite">
         {mode === "parent" ? "Parent Mode" : "Child Mode"}
       </div>
-
       <label htmlFor="pecs-search-input" className="pecs-search-label">
         Search for a picture card
       </label>
       <input
+        ref={inputRef}
         id="pecs-search-input"
         type="text"
         value={query}
@@ -58,12 +65,10 @@ export default function PecsSearch({ onSelectCard }) {
         autoComplete="off"
         className="pecs-search-input"
       />
-
       {status === "loading" && <p role="status">Searching…</p>}
       {status === "error" && (
         <p role="alert">Something went wrong. Please try again.</p>
       )}
-
       <div className="pecs-results-grid" role="list">
         {results.map((symbol) => (
           <button

@@ -1,0 +1,222 @@
+/* Fixed to the top-right of the viewport on every page, so it's always
+   visible and clickable regardless of scroll position or which category
+   page is showing. Positioned top-right specifically to avoid overlapping
+   the ☰ nav menu trigger, which conventionally sits top-left. */
+.intro-message {
+  position: fixed;
+  top: 0.75rem;
+  right: 0.75rem;
+  z-index: 900; /* below the nav dropdown/modals, above normal page content */
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Large, high-contrast primary button — well beyond the 44x44px WCAG
+   minimum touch target, for anyone who needs a bigger, easier target
+   to press accurately. */
+.intro-message__speak-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 3.5rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 1.15rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #ffffff;
+  background: var(--color-accent-strong);
+  border: 3px solid var(--color-border);
+  border-radius: 999px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.intro-message__speak-button:hover,
+.intro-message__speak-button:focus-visible {
+  filter: brightness(1.1);
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.intro-message__speak-button:active {
+  filter: brightness(0.95);
+}
+
+/* Edit (pencil) button — round, but still a large tap target rather than
+   a tiny icon-only button. */
+.intro-message__edit-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  flex-shrink: 0;
+  font-size: 1.4rem;
+  color: var(--color-text);
+  background: var(--color-bg);
+  border: 3px solid var(--color-border);
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+
+.intro-message__edit-button:hover,
+.intro-message__edit-button:focus-visible {
+  background: var(--color-bg-subtle);
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.intro-message__edit-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Edit dialog */
+.intro-message__overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.intro-message__dialog {
+  background: var(--color-bg);
+  color: var(--color-text);
+  border-radius: 16px;
+  max-width: 480px;
+  width: 100%;
+  padding: 1.75rem;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+}
+
+.intro-message__dialog h2 {
+  margin: 0 0 1rem;
+  font-size: 1.4rem;
+}
+
+.intro-message__dialog label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.intro-message__dialog textarea {
+  width: 100%;
+  font-size: 1.1rem;
+  font-family: inherit;
+  padding: 0.75rem;
+  border: 2px solid var(--color-border-subtle);
+  border-radius: 10px;
+  background: var(--color-bg);
+  color: var(--color-text);
+  resize: vertical;
+}
+
+.intro-message__dialog textarea:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 1px;
+}
+
+.intro-message__lock-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.intro-message__lock-toggle input[type="checkbox"] {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.intro-message__notice {
+  margin-top: 0.75rem;
+  font-size: 0.95rem;
+  color: var(--color-text-secondary);
+}
+
+.intro-message__error {
+  margin-top: 0.75rem;
+  font-size: 0.95rem;
+  color: var(--color-error);
+  font-weight: 600;
+}
+
+.intro-message__dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.intro-message__dialog-actions button {
+  min-height: 3rem;
+  padding: 0.6rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 700;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.intro-message__dialog-actions button:first-child {
+  background: var(--color-bg);
+  color: var(--color-text);
+  border: 2px solid var(--color-border-subtle);
+}
+
+.intro-message__dialog-actions button:last-child {
+  background: var(--color-accent-strong);
+  color: #ffffff;
+  border: 2px solid var(--color-accent-strong);
+}
+
+.intro-message__dialog-actions button:hover,
+.intro-message__dialog-actions button:focus-visible {
+  filter: brightness(1.1);
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.intro-message__dialog-actions button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Smaller screens: stack instead of squeezing the label + edit button
+   into a tight corner, and drop to a slightly smaller (still large)
+   touch target so it doesn't dominate a small viewport. */
+@media (max-width: 480px) {
+  .intro-message {
+    top: 0.5rem;
+    right: 0.5rem;
+    left: 0.5rem;
+    justify-content: flex-end;
+  }
+  .intro-message__speak-button {
+    min-height: 3rem;
+    padding: 0.6rem 1.1rem;
+    font-size: 1rem;
+  }
+  .intro-message__edit-button {
+    width: 3rem;
+    height: 3rem;
+    font-size: 1.2rem;
+  }
+}
+
+/* Print: never show the floating button on printed pages */
+@media print {
+  .intro-message {
+    display: none !important;
+  }
+}

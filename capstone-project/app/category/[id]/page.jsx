@@ -7,9 +7,7 @@ import GridTemplate from "@/components/templates/GridTemplate";
 import SingleSelectorTemplate from "@/components/templates/SingleSelectorTemplate";
 import SentenceCreatorTemplate from "@/components/templates/SentenceCreatorTemplate";
 import WeeklyChoreListTemplate from "@/components/templates/WeeklyChoreListTemplate";
-// Not built yet — placeholder below renders a friendly "coming soon" message
-// instead of crashing until this exists.
-// import EmergencyCardTemplate from "@/components/templates/EmergencyCardTemplate";
+import EmergencyCardTemplate from "@/components/templates/EmergencyCardTemplate";
 
 export default function CategoryPage() {
   const params = useParams();
@@ -39,7 +37,7 @@ export default function CategoryPage() {
       return <WeeklyChoreListTemplate category={category} />;
 
     case "emergency":
-      return <ComingSoon category={category} />;
+      return <EmergencyCardTemplate category={category} />;
 
     default:
       return <ComingSoon category={category} />;
