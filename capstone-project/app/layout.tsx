@@ -6,6 +6,7 @@ import { ThemeProvider } from "@/context/ThemeContext";
 import NavMenu from "@/components/NavMenu";
 import IntroductionMessageButton from "@/components/IntroductionMessageButton";
 import SiteHeader from "@/components/SiteHeader";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const lexend = Lexend({
   variable: "--font-lexend",
@@ -44,6 +45,7 @@ export default function RootLayout({
             <IntroductionMessageButton />
           </ParentModeProvider>
         </ThemeProvider>
+        <SpeedInsights />
       </body>
     </html>
   );
