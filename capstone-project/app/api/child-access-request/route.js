@@ -36,7 +36,7 @@ export async function POST(request) {
   }
 
   try {
-    const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL || "https://mywordsmatter.app";
     await sendEmail({
       to: parentEmail.trim(),
       subject: "Your child would like to use My Words Matter",
