@@ -67,11 +67,19 @@
 }
 
 @media (max-width: 480px) {
+  .home-page {
+    margin: 1rem auto;
+    padding: 0 1rem 2rem;
+  }
   .home-page__grid {
     grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
   }
   .home-page__category-button {
     min-height: 120px;
     padding: 1.25rem 0.75rem;
+  }
+  .home-page__category-name {
+    font-size: 1.1rem;
   }
 }
