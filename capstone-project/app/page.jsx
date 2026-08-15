@@ -4,6 +4,7 @@ import { CATEGORIES } from "@/lib/categories";
 import { useParentMode } from "@/context/ParentModeContext";
 import CategoryIcon from "@/components/CategoryIcon";
 import "./home-page.css";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export default function HomePage() {
   const { mode, familyType, loading } = useParentMode();
