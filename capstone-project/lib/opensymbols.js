@@ -1,3 +1,4 @@
+
 const OPENSYMBOLS_BASE = "https://www.opensymbols.org/api/v2";
 
 let cachedToken = null;
