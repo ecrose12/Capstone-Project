@@ -88,3 +88,24 @@
   color: var(--color-text);
   word-break: break-word;
 }
+
+@media (max-width: 480px) {
+  .pecs-search-input {
+    min-height: 2.75rem;
+    font-size: 1rem;
+  }
+
+  .pecs-results-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+    max-height: 260px;
+  }
+
+  .pecs-card-button {
+    padding: 0.4rem;
+  }
+
+  .pecs-card-button span {
+    font-size: 0.8rem;
+  }
+}

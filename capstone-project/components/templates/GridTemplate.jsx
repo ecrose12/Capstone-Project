@@ -2,6 +2,7 @@
 import { useState, useCallback } from "react";
 import PecsSearch from "../PecsSearch";
 import SpeakButton from "../SpeakButton";
+import "./GridTemplate.css";
 
 export default function GridTemplate({ category }) {
   const isMulti = category.selectionMode === "multi";
