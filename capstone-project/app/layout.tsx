@@ -40,7 +40,10 @@ export default function RootLayout({
           <ParentModeProvider>
             <SiteHeader />
             <NavMenu />
-            {children}
+            <main className="flex-1 w-full">
+        {children}
+      </main>
+
             <IntroductionMessageButton />
           </ParentModeProvider>
         </ThemeProvider>
