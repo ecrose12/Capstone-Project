@@ -15,7 +15,6 @@ export default function NavMenu() {
   const buttonRef = useRef(null);
   const supabase = createClient();
 
-  // Close on outside click
   useEffect(() => {
     if (!open) return;
     function handleClickOutside(e) {
@@ -31,7 +30,6 @@ export default function NavMenu() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [open]);
 
-  // Close on Escape, return focus to the trigger button
   useEffect(() => {
     if (!open) return;
     function handleKeyDown(e) {
@@ -44,8 +42,6 @@ export default function NavMenu() {
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [open]);
 
-  // Collapse the Account submenu whenever the whole menu closes, so it
-  // doesn't reopen already-expanded next time.
   useEffect(() => {
     if (!open) setAccountOpen(false);
   }, [open]);
@@ -57,6 +53,13 @@ export default function NavMenu() {
 
   const isParent = mode === "parent";
   const isFamilyAccount = familyType === "family";
+  const isSchoolAccount = familyType === "school";
+
+  const signOutLabel = isSchoolAccount
+    ? "Exit Teacher Mode"
+    : isFamilyAccount
+    ? "Exit Parent/Caregiver Mode"
+    : "Sign Out";
 
   return (
     <nav className="nav-menu">
@@ -75,7 +78,6 @@ export default function NavMenu() {
 
       {open && (
         <div id="nav-menu-dropdown" ref={menuRef} className="nav-menu__dropdown" role="menu">
-          {/* Home navigation */}
           <div className="nav-menu__section" role="none">
             <Link href="/" role="menuitem" className="nav-menu__item" onClick={() => setOpen(false)}>
               Home
@@ -84,7 +86,6 @@ export default function NavMenu() {
 
           <hr className="nav-menu__divider" />
 
-          {/* Account section — collapsed submenu */}
           <div className="nav-menu__section" role="none">
             {!modeLoading && (
               <>
@@ -119,7 +120,7 @@ export default function NavMenu() {
                           className="nav-menu__item nav-menu__subitem"
                           onClick={handleSignOut}
                         >
-                          {isFamilyAccount ? "Exit Parent/Caregiver Mode" : "Sign Out"}
+                          {signOutLabel}
                         </button>
                       </>
                     ) : (
@@ -150,7 +151,6 @@ export default function NavMenu() {
 
           <hr className="nav-menu__divider" />
 
-          {/* Settings */}
           <div className="nav-menu__section" role="none">
             <Link href="/settings" role="menuitem" className="nav-menu__item" onClick={() => setOpen(false)}>
               Settings
@@ -159,7 +159,6 @@ export default function NavMenu() {
 
           <hr className="nav-menu__divider" />
 
-          {/* Light/Dark toggle */}
           <div className="nav-menu__section" role="none">
             <button
               type="button"
@@ -175,7 +174,6 @@ export default function NavMenu() {
 
           <hr className="nav-menu__divider" />
 
-          {/* Resources */}
           <div className="nav-menu__section" role="none">
             <Link href="/resources" role="menuitem" className="nav-menu__item" onClick={() => setOpen(false)}>
               Resource Links
@@ -184,7 +182,6 @@ export default function NavMenu() {
 
           <hr className="nav-menu__divider" />
 
-          {/* Support */}
           <div className="nav-menu__section" role="none">
             <Link href="/support" role="menuitem" className="nav-menu__item" onClick={() => setOpen(false)}>
               Contact Support
