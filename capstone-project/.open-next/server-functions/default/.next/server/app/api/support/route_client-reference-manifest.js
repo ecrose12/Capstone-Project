@@ -1,0 +1,1 @@
+globalThis.__RSC_MANIFEST=(globalThis.__RSC_MANIFEST||{});globalThis.__RSC_MANIFEST["/api/support/route"]={"moduleLoading":{"prefix":"/_next/"},"ssrModuleMapping":{},"edgeSSRModuleMapping":{},"clientModules":{},"entryCSSFiles":{"/Users/elizabethcrose/Documents/GitHub/Capstone Project/capstone-project/app/api/support/route":[]},"rscModuleMapping":{},"edgeRscModuleMapping":{}};
