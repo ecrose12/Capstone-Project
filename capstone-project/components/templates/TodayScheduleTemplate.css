@@ -334,6 +334,9 @@
     flex-basis: 100%;
     text-align: left;
   }
+  .today-schedule__actions {
+    flex-wrap: wrap;
+  }
 }
 
 @media print {
