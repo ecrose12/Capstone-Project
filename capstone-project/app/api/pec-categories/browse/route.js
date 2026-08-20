@@ -4,12 +4,16 @@ import { resolveFamilyContext } from "@/lib/familyContext";
 import { cleanSymbolName } from "@/lib/formatSymbolName";
 import { filterChildSafeSymbols } from "@/lib/contentFilter";
 import { PEC_CATEGORIES } from "@/lib/pecCategories";
-import { CATEGORY_RELEVANCE_TERMS } from "@/lib/categoryRelevance";
+import { CATEGORY_RELEVANCE_TERMS, CATEGORY_EXCLUDE_TERMS } from "@/lib/categoryRelevance";
 
 function isRelevant(name, categoryId) {
+  const lower = name.toLowerCase();
+
+  const excludeTerms = CATEGORY_EXCLUDE_TERMS[categoryId];
+  if (excludeTerms?.some((term) => lower.includes(term))) return false;
+
   const terms = CATEGORY_RELEVANCE_TERMS[categoryId];
   if (!terms) return true;
-  const lower = name.toLowerCase();
   return terms.some((term) => lower.includes(term));
 }
 

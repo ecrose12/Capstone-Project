@@ -46,4 +46,13 @@ export const CATEGORY_RELEVANCE_TERMS = {
     "hat", "coat", "jacket", "sweater", "skirt", "shorts", "glove",
     "scarf", "boot", "pajama", "underwear",
   ],
+  
+};
+
+export const CATEGORY_EXCLUDE_TERMS = {
+  places: [
+    "medal", "place setting", "1st place", "2nd place", "3rd place",
+    "first place", "second place", "third place", "placeholder",
+  ],
+  people: ["flag"],
 };
