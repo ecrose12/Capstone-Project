@@ -5,6 +5,9 @@ import { createClient } from "@/lib/supabase/client";
 import "./ParentSignup.css";
 
 const STEP_CHOOSE_TYPE = "choose-type";
+const STEP_PERSONAL_CHOOSE_TYPE = "personal-choose-type";
+const STEP_SCHOOL_CHOOSE_TYPE = "school-choose-type";
+const STEP_STUDENT_CODE = "student-code";
 const STEP_AGE_CHECK = "age-check";
 const STEP_CHILD_PATH = "child-path";
 const STEP_FORM = "form";
@@ -13,7 +16,7 @@ const STEP_FAILURE = "failure";
 
 export default function ParentSignup() {
   const [step, setStep] = useState(STEP_CHOOSE_TYPE);
-  const [accountType, setAccountType] = useState(""); // "individual" | "family"
+  const [accountType, setAccountType] = useState(""); // "individual" | "family" | "school" | "child"
   const [childMethod, setChildMethod] = useState("code"); // "code" | "email"
 
   const [email, setEmail] = useState("");
@@ -29,6 +32,13 @@ export default function ParentSignup() {
   function chooseAccountType(type) {
     setAccountType(type);
     setStep(STEP_AGE_CHECK);
+  }
+
+  // School staff are assumed to be adults — skip the age check and go
+  // straight to the signup form.
+  function chooseSchoolStaff() {
+    setAccountType("school");
+    setStep(STEP_FORM);
   }
 
   function chooseChildAccount() {
@@ -59,7 +69,7 @@ export default function ParentSignup() {
       return;
     }
 
-    if (accountType === "family" && coParentInviteCode.trim()) {
+    if ((accountType === "family" || accountType === "school") && coParentInviteCode.trim()) {
       const res = await fetch("/api/account-invite/redeem", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -157,10 +167,29 @@ export default function ParentSignup() {
     setStep(STEP_SUCCESS);
   }
 
+  // --- Top-level split: personal/family use, or school use ---
   if (step === STEP_CHOOSE_TYPE) {
     return (
       <div className="signup">
         <h2>Create Account</h2>
+        <p>Who is this account for?</p>
+        <div className="signup__type-options">
+          <button type="button" onClick={() => setStep(STEP_PERSONAL_CHOOSE_TYPE)}>
+            Personal / Family Use
+          </button>
+          <button type="button" onClick={() => setStep(STEP_SCHOOL_CHOOSE_TYPE)}>
+            School / Educational Use
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // --- Personal/family branch: original three options, unchanged ---
+  if (step === STEP_PERSONAL_CHOOSE_TYPE) {
+    return (
+      <div className="signup">
+        <h2>Personal / Family Use</h2>
         <p>What kind of account is this?</p>
         <div className="signup__type-options">
           <button type="button" onClick={() => chooseAccountType("individual")}>
@@ -173,6 +202,64 @@ export default function ParentSignup() {
             Child Account
           </button>
         </div>
+        <button type="button" className="signup__back" onClick={() => setStep(STEP_CHOOSE_TYPE)}>
+          ← Back
+        </button>
+      </div>
+    );
+  }
+
+  // --- School branch: staff account, or student account via code only ---
+  if (step === STEP_SCHOOL_CHOOSE_TYPE) {
+    return (
+      <div className="signup">
+        <h2>School / Educational Use</h2>
+        <p>What kind of account is this?</p>
+        <div className="signup__type-options">
+          <button type="button" onClick={chooseSchoolStaff}>
+            School Employee / Administrator
+          </button>
+          <button type="button" onClick={() => setStep(STEP_STUDENT_CODE)}>
+            Student Account
+          </button>
+        </div>
+        <button type="button" className="signup__back" onClick={() => setStep(STEP_CHOOSE_TYPE)}>
+          ← Back
+        </button>
+      </div>
+    );
+  }
+
+  // --- Student accounts require a code from their school — no
+  //     alternative self-service path, unlike the personal Child flow.
+  if (step === STEP_STUDENT_CODE) {
+    return (
+      <div className="signup">
+        <h2>Student Account</h2>
+        <p>Enter the invite code your school gave you to set up your account.</p>
+        <form onSubmit={handleChildSignupWithCode}>
+          <label htmlFor="student-email">Email</label>
+          <input id="student-email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+          <label htmlFor="student-password">Password</label>
+          <input id="student-password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} minLength={8} required />
+          <label htmlFor="student-invite-code">Invite Code</label>
+          <input
+            id="student-invite-code"
+            type="text"
+            inputMode="numeric"
+            maxLength={6}
+            value={childInviteCode}
+            onChange={(e) => setChildInviteCode(e.target.value)}
+            required
+          />
+          {error && <p role="alert">{error}</p>}
+          <button type="submit" disabled={loading}>
+            {loading ? "Creating account…" : "Sign Up"}
+          </button>
+        </form>
+        <button type="button" className="signup__back" onClick={() => setStep(STEP_SCHOOL_CHOOSE_TYPE)}>
+          ← Back
+        </button>
       </div>
     );
   }
@@ -190,7 +277,7 @@ export default function ParentSignup() {
             No, I'm under 13
           </button>
         </div>
-        <button type="button" className="signup__back" onClick={() => setStep(STEP_CHOOSE_TYPE)}>
+        <button type="button" className="signup__back" onClick={() => setStep(STEP_PERSONAL_CHOOSE_TYPE)}>
           ← Back
         </button>
       </div>
@@ -269,7 +356,7 @@ export default function ParentSignup() {
           </form>
         )}
 
-        <button type="button" className="signup__back" onClick={() => setStep(STEP_CHOOSE_TYPE)}>
+        <button type="button" className="signup__back" onClick={() => setStep(STEP_PERSONAL_CHOOSE_TYPE)}>
           ← Back
         </button>
       </div>
@@ -277,19 +364,27 @@ export default function ParentSignup() {
   }
 
   if (step === STEP_FORM) {
+    const heading =
+      accountType === "individual"
+        ? "Individual User"
+        : accountType === "school"
+        ? "School Employee / Administrator"
+        : "Parent/Caregiver User";
+
     return (
       <div className="signup">
-        <h2>{accountType === "individual" ? "Individual User" : "Parent/Caregiver User"}</h2>
+        <h2>{heading}</h2>
         <form onSubmit={handleIndividualOrParentSignup}>
           <label htmlFor="signup-email">Email</label>
           <input id="signup-email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
           <label htmlFor="signup-password">Password</label>
           <input id="signup-password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} minLength={8} required />
 
-          {accountType === "family" && (
+          {(accountType === "family" || accountType === "school") && (
             <>
               <label htmlFor="co-parent-code">
-                Invite code (optional — only if joining an existing family)
+                Invite code (optional — only if joining an existing{" "}
+                {accountType === "school" ? "school" : "family"} account)
               </label>
               <input
                 id="co-parent-code"
@@ -307,7 +402,13 @@ export default function ParentSignup() {
             {loading ? "Creating account…" : "Sign Up"}
           </button>
         </form>
-        <button type="button" className="signup__back" onClick={() => setStep(STEP_AGE_CHECK)}>
+        <button
+          type="button"
+          className="signup__back"
+          onClick={() =>
+            setStep(accountType === "school" ? STEP_SCHOOL_CHOOSE_TYPE : STEP_AGE_CHECK)
+          }
+        >
           ← Back
         </button>
       </div>
@@ -341,6 +442,7 @@ export default function ParentSignup() {
     return (
       <div className="signup signup__result signup__result--failure" role="alert">
         <h2>Account creation failed.</h2>
+        {error && <p className="signup__hint">{error}</p>}
         <p>
           Please try again, or contact My Words Matter user support{" "}
           <Link href="/support">here</Link>.
@@ -351,6 +453,5 @@ export default function ParentSignup() {
       </div>
     );
   }
-
   return null;
 }
