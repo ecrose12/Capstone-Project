@@ -1,38 +1,46 @@
-// A second, independent layer of content filtering for Child Mode —
-// applied on top of (not instead of) OpenSymbols' own `safe` parameter.
-// This protects against the third-party API's own filtering being
-// incomplete, especially important for browse-by-category results,
-// which are broader and less predictable than a specific typed search.
-//
-// This list intentionally covers common profanity/explicit-content
-// terms at a moderate level of coverage — extend it as needed. Matching
-// is whole-word and case-insensitive to reduce false positives on
-// unrelated words that merely contain a blocked substring.
-const BLOCKED_TERMS = [
-  "sex", "sexual", "porn", "nude", "naked", "penis", "vagina", "breast",
+const BLOCKED_WORDS = [
+  "sex", "sexual", "porn", "pornographic", "nude", "nudity", "naked",
+  "penis", "vagina", "breast", "genital", "orgasm", "masturbat",
   "fuck", "shit", "bitch", "damn", "ass", "asshole", "bastard", "crap",
-  "cock", "dick", "pussy", "whore", "slut", "cunt",
-  "kill", "murder", "suicide", "rape", "molest",
-  "drug", "cocaine", "heroin", "meth", "weed", "marijuana",
-  "gun", "weapon", "bomb", "terrorist",
-  "nazi", "hitler",
+  "cock", "dick", "pussy", "whore", "slut", "cunt", "piss",
+  "kill", "murder", "suicide", "rape", "molest", "assault", "stab",
+  "shoot", "shooting", "gun", "firearm", "rifle", "pistol", "ammo",
+  "ammunition", "bullet", "knife", "sword", "weapon", "bomb", "explosive",
+  "grenade", "terrorist", "terrorism", "massacre", "genocide", "corpse",
+  "gore", "blood", "decapitat",
+  "cutting", "overdose", "self-harm", "selfharm",
+  "drug", "cocaine", "heroin", "meth", "methamphetamine", "weed",
+  "marijuana", "cannabis", "opioid", "fentanyl", "vape", "vaping",
+  "cigarette", "tobacco", "alcohol", "beer", "wine", "vodka", "whiskey",
+  "drunk", "intoxicat",
+  "gambling", "casino", "poker", "lottery",
+  "nazi", "hitler", "kkk", "supremacist", "extremist", "racist", "slur",
+  "ghost", "zombie", "demon", "devil", "satan", "occult", "horror",
+  "haunted", "possessed", "exorcis",
 ];
 
-const BLOCKED_PATTERN = new RegExp(
-  `\\b(${BLOCKED_TERMS.map((t) => t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|")})\\b`,
+const BLOCKED_PHRASES = [
+  "hit by", "hit with", "hurt by", "hurt with",
+  "abuse", "abused", "cruelty", "cruel to",
+  "beaten", "beat with", "beat by",
+  "kicked by", "kicked with", "punched", "slapped",
+  "tortur", "attacked by", "stabbed by",
+  "self harm", "harm to self",
+];
+
+const BLOCKED_WORDS_PATTERN = new RegExp(
+  `\\b(${BLOCKED_WORDS.map((t) => t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|")})\\b`,
   "i"
 );
 
-// Returns true if the given text is safe to show to a child. Checks
-// against the blocklist above; callers combine this with OpenSymbols'
-// own `safe` flag for two independent layers of filtering.
 export function isChildSafeText(text) {
   if (!text) return true;
-  return !BLOCKED_PATTERN.test(text);
+  const lower = text.toLowerCase();
+  if (BLOCKED_WORDS_PATTERN.test(text)) return false;
+  if (BLOCKED_PHRASES.some((phrase) => lower.includes(phrase))) return false;
+  return true;
 }
 
-// Filters an array of symbol objects (each with a `name`), keeping only
-// those that pass the child-safety check.
 export function filterChildSafeSymbols(symbols) {
   return symbols.filter((s) => isChildSafeText(s.name));
 }
