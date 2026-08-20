@@ -3,26 +3,30 @@ import { searchSymbols } from "@/lib/opensymbols";
 import { resolveFamilyContext } from "@/lib/familyContext";
 import { cleanSymbolName } from "@/lib/formatSymbolName";
 import { filterChildSafeSymbols } from "@/lib/contentFilter";
+import { PEC_CATEGORIES } from "@/lib/pecCategories";
+import { CATEGORY_RELEVANCE_TERMS } from "@/lib/categoryRelevance";
+
+function isRelevant(name, categoryId) {
+  const terms = CATEGORY_RELEVANCE_TERMS[categoryId];
+  if (!terms) return true;
+  const lower = name.toLowerCase();
+  return terms.some((term) => lower.includes(term));
+}
 
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
-  const query = searchParams.get("q");
+  const categoryId = searchParams.get("category");
 
-  if (!query || query.trim().length === 0) {
-    return NextResponse.json({ error: "Missing search query" }, { status: 400 });
+  const category = PEC_CATEGORIES.find((c) => c.id === categoryId);
+  if (!category) {
+    return NextResponse.json({ error: "Unknown category" }, { status: 400 });
   }
 
-  // Safe search is controlled entirely server-side based on session/device
-  // state — the client never sends a "safe" flag, so there's nothing for a
-  // child (or a bug) to flip. `alwaysSafeSearch` lets a family (e.g. a
-  // school) force filtering for EVERY user, including parent-role
-  // accounts — used independently of isParent, which still gates all
-  // other admin capabilities normally.
   const { isParent, alwaysSafeSearch } = await resolveFamilyContext();
   const useSafeSearch = !isParent || alwaysSafeSearch;
 
   try {
-    const results = await searchSymbols(query.trim(), { safe: useSafeSearch });
+    const results = await searchSymbols(category.query, { safe: useSafeSearch });
     let simplified = results.map((r) => ({
       id: r.id,
       name: cleanSymbolName(r.name),
@@ -30,8 +34,8 @@ export async function GET(request) {
       license: r.license,
     }));
 
-    // Second, independent layer of content filtering, on top of
-    // OpenSymbols' own `safe` parameter — not a replacement for it.
+    simplified = simplified.filter((s) => isRelevant(s.name, categoryId));
+
     if (useSafeSearch) {
       simplified = filterChildSafeSymbols(simplified);
     }
