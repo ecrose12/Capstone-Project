@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Lexend } from "next/font/google";
 import "./globals.css";
 import { ParentModeProvider } from "@/context/ParentModeContext";
@@ -6,11 +6,8 @@ import { ThemeProvider } from "@/context/ThemeContext";
 import NavMenu from "@/components/NavMenu";
 import IntroductionMessageButton from "@/components/IntroductionMessageButton";
 import SiteHeader from "@/components/SiteHeader";
+import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
 
-const lexend = Lexend({
-  variable: "--font-lexend",
-  subsets: ["latin"],
-});
 const lexend = Lexend({
   variable: "--font-lexend",
   subsets: ["latin"],
@@ -31,6 +28,10 @@ export const metadata: Metadata = {
   },
 };
 
+export const viewport: Viewport = {
+  themeColor: "#0b5fb0",
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -43,8 +44,11 @@ export default function RootLayout({
           <ParentModeProvider>
             <SiteHeader />
             <NavMenu />
-            {children}
+            <main className="flex-1 w-full">
+              {children}
+            </main>
             <IntroductionMessageButton />
+            <ServiceWorkerRegister />
           </ParentModeProvider>
         </ThemeProvider>
       </body>

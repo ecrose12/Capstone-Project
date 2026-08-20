@@ -1,0 +1,1 @@
+globalThis.__RSC_MANIFEST=(globalThis.__RSC_MANIFEST||{});globalThis.__RSC_MANIFEST["/icon/route"]={"moduleLoading":{"prefix":"/_next/"},"ssrModuleMapping":{},"edgeSSRModuleMapping":{},"clientModules":{},"entryCSSFiles":{"/Users/elizabethcrose/Documents/GitHub/Capstone Project/capstone-project/app/icon/route":[]},"rscModuleMapping":{},"edgeRscModuleMapping":{}};
