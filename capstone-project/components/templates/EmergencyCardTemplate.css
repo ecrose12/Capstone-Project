@@ -250,6 +250,18 @@
   cursor: not-allowed;
 }
 
+@media (max-width: 480px) {
+  .emergency-card {
+    padding: 1rem 0.75rem 1.5rem;
+  }
+  .emergency-card__preset-card {
+    width: 110px;
+  }
+  .emergency-card__actions {
+    flex-wrap: wrap;
+  }
+}
+
 @media print {
   .emergency-card__add-phrase,
   .emergency-card__preset-remove,

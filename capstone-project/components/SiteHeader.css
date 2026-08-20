@@ -3,15 +3,15 @@
   align-items: center;
   justify-content: center;
   height: 5rem;
-  padding: 0 5rem; /* reserve horizontal space so the title never sits under
+  padding: 0 3.5rem; /* reserve horizontal space so the title never sits under
                        the fixed nav trigger (left) or intro button (right) */
   background: var(--color-bg);
   border-bottom: 3px solid var(--color-border);
 }
 
 .site-header__title {
-  font-size: clamp(1.1rem, 4vw, 1.6rem);
-  font-weight: 800;
+  font-size: clamp(1.6rem, 4vw, 3.5rem);
+  font-weight: 1000;
   letter-spacing: 0.01em;
   color: var(--color-text);
   text-decoration: none;
@@ -26,10 +26,17 @@
   border-radius: 6px;
 }
 
-@media (max-width: 480px) {
+@media (max-width: 640px) {
   .site-header {
     height: 4.5rem;
-    padding: 0 4rem;
+    padding: 0 3rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .site-header {
+    height: 4rem;
+    padding: 0 2.5rem;
   }
 }
 

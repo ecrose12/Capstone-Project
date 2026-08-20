@@ -87,8 +87,6 @@
   font-weight: 600;
   color: var(--color-text);
   word-break: break-word;
-<<<<<<< Updated upstream
-=======
 }
 
 .pecs-category-grid {
@@ -166,11 +164,13 @@
     min-height: 2.75rem;
     font-size: 1rem;
   }
+
   .pecs-results-grid {
     grid-template-columns: repeat(3, 1fr);
     gap: 0.5rem;
     max-height: 260px;
   }
+
   .pecs-card-button {
     padding: 0.4rem;
   }
@@ -181,5 +181,3 @@
     grid-template-columns: repeat(3, 1fr);
     gap: 0.5rem;
   }
->>>>>>> Stashed changes
-}

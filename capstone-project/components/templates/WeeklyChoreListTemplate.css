@@ -279,6 +279,9 @@
   .weekly-chore__row--header {
     display: none;
   }
+  .weekly-chore__actions {
+    flex-wrap: wrap;
+  }
 }
 
 @media print {

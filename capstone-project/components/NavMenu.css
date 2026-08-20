@@ -32,6 +32,7 @@
   top: calc(100% + 0.5rem);
   left: 0;
   min-width: 240px;
+  max-width: calc(100vw - 1.5rem); /* prevents overflow on very narrow screens */
   background: var(--color-bg);
   color: var(--color-text);
   border: 2px solid var(--color-border);
