@@ -16,6 +16,7 @@ const TTS_LANGUAGES = [
 ];
 
 const TTS_STORAGE_KEY = "pecs-tts-language";
+const SEARCH_MODE_KEY = "pecs-search-mode";
 
 export default function SettingsPage() {
   const { mode, loading: modeLoading, familyType, hasFamily } = useParentMode();
@@ -24,6 +25,7 @@ export default function SettingsPage() {
   const supabase = createClient();
 
   const [ttsLanguage, setTtsLanguage] = useState("en-US");
+  const [searchMode, setSearchMode] = useState("type");
   const [showPairingEntry, setShowPairingEntry] = useState(false);
   const [upgrading, setUpgrading] = useState(false);
   const [upgradeError, setUpgradeError] = useState("");
@@ -31,12 +33,22 @@ export default function SettingsPage() {
   useEffect(() => {
     const stored = window.localStorage.getItem(TTS_STORAGE_KEY);
     if (stored) setTtsLanguage(stored);
+
+    const storedSearchMode = window.localStorage.getItem(SEARCH_MODE_KEY);
+    if (storedSearchMode === "type" || storedSearchMode === "category") {
+      setSearchMode(storedSearchMode);
+    }
   }, []);
 
   function handleLanguageChange(e) {
     const value = e.target.value;
     setTtsLanguage(value);
     window.localStorage.setItem(TTS_STORAGE_KEY, value);
+  }
+
+  function handleSearchModeChange(value) {
+    setSearchMode(value);
+    window.localStorage.setItem(SEARCH_MODE_KEY, value);
   }
 
   async function handleSignOut() {
@@ -64,6 +76,19 @@ export default function SettingsPage() {
   if (modeLoading) return null;
 
   const isFamilyAccount = familyType === "family";
+  const isSchoolAccount = familyType === "school";
+
+  const modeStatusText = isSchoolAccount
+    ? "Teacher Mode is active on this device."
+    : isFamilyAccount
+    ? "Parent/Caregiver Mode is active on this device."
+    : "You're signed in.";
+
+  const signOutLabel = isSchoolAccount
+    ? "Exit Teacher Mode"
+    : isFamilyAccount
+    ? "Exit Parent/Caregiver Mode"
+    : "Sign Out";
 
   return (
     <main className="settings-page">
@@ -82,17 +107,42 @@ export default function SettingsPage() {
       </section>
 
       <section className="settings-page__section">
+        <h2>PEC Card Search Style</h2>
+        <p>Choose how you'd like to find picture cards when selecting one.</p>
+        <div className="settings-page__radio-group">
+          <label className="settings-page__radio-option">
+            <input
+              type="radio"
+              name="pecs-search-mode"
+              value="type"
+              checked={searchMode === "type"}
+              onChange={() => handleSearchModeChange("type")}
+            />
+            Type to Search
+          </label>
+          <label className="settings-page__radio-option">
+            <input
+              type="radio"
+              name="pecs-search-mode"
+              value="category"
+              checked={searchMode === "category"}
+              onChange={() => handleSearchModeChange("category")}
+            />
+            Browse by Category
+          </label>
+        </div>
+      </section>
+
+      <section className="settings-page__section">
         <h2>Account</h2>
         {isParent ? (
           <>
-            <p role="status">
-              {isFamilyAccount ? "Parent/Caregiver Mode is active on this device." : "You're signed in."}
-            </p>
+            <p role="status">{modeStatusText}</p>
             <button type="button" onClick={handleSignOut}>
-              {isFamilyAccount ? "Exit Parent/Caregiver Mode" : "Sign Out"}
+              {signOutLabel}
             </button>
 
-            {!isFamilyAccount && (
+            {!isFamilyAccount && !isSchoolAccount && (
               <div className="settings-page__upgrade">
                 <p>
                   Want to add a child or set up shared devices? You can switch
@@ -113,14 +163,22 @@ export default function SettingsPage() {
         )}
       </section>
 
-      {isFamilyAccount && (
+      {(isFamilyAccount || isSchoolAccount) && (
         <section className="settings-page__section">
           <h2>Device Pairing</h2>
           {hasFamily ? (
-            <p role="status">This device is linked to a family account.</p>
+            <p role="status">
+              {isSchoolAccount
+                ? "This device is linked to your school's account."
+                : "This device is linked to a family account."}
+            </p>
           ) : (
             <>
-              <p role="status">This device isn't paired to a family yet.</p>
+              <p role="status">
+                {isSchoolAccount
+                  ? "This device isn't paired to your school's account yet."
+                  : "This device isn't paired to a family yet."}
+              </p>
               {!showPairingEntry && (
                 <button type="button" onClick={() => setShowPairingEntry(true)}>
                   Enter a Pairing Code

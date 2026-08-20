@@ -20,7 +20,7 @@ export async function POST(request) {
   }
 
   const { type } = await request.json();
-  if (!["individual", "family"].includes(type)) {
+  if (!["individual", "family", "school"].includes(type)) {
     return NextResponse.json({ error: "Invalid account type" }, { status: 400 });
   }
 
@@ -36,10 +36,13 @@ export async function POST(request) {
     return NextResponse.json({ familyId: existing.family_id, alreadyExists: true });
   }
 
+  const nameSuffix =
+    type === "individual" ? "account" : type === "school" ? "school" : "family";
+
   const { data: family, error: familyError } = await svc
     .from("families")
     .insert({
-      name: `${user.email}'s ${type === "individual" ? "account" : "family"}`,
+      name: `${user.email}'s ${nameSuffix}`,
       family_type: type,
     })
     .select("id")
