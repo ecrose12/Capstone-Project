@@ -26,6 +26,9 @@ const BLOCKED_PHRASES = [
   "kicked by", "kicked with", "punched", "slapped",
   "tortur", "attacked by", "stabbed by",
   "self harm", "harm to self",
+  "sharp object", "in mouth", "pushing eye", "poke eye", "poking eye",
+  "eye object", "throwing stick", "throw stick", "stick at animal",
+  "swallow", "choking hazard",
 ];
 
 const BLOCKED_WORDS_PATTERN = new RegExp(
