@@ -30,13 +30,24 @@ export async function GET(request) {
   const useSafeSearch = !isParent || alwaysSafeSearch;
 
   try {
-    const results = await searchSymbols(category.query, { safe: useSafeSearch });
-    let simplified = results.map((r) => ({
-      id: r.id,
-      name: cleanSymbolName(r.name),
-      imageUrl: r.image_url,
-      license: r.license,
-    }));
+    const resultsPerQuery = await Promise.all(
+      category.queries.map((q) => searchSymbols(q, { safe: useSafeSearch }))
+    );
+
+    const seen = new Set();
+    let simplified = [];
+    for (const results of resultsPerQuery) {
+      for (const r of results) {
+        if (seen.has(r.id)) continue;
+        seen.add(r.id);
+        simplified.push({
+          id: r.id,
+          name: cleanSymbolName(r.name),
+          imageUrl: r.image_url,
+          license: r.license,
+        });
+      }
+    }
 
     simplified = simplified.filter((s) => isRelevant(s.name, categoryId));
 
