@@ -9,5 +9,19 @@
 	"assets": {
 		"directory": ".open-next/assets",
 		"binding": "ASSETS"
+	},
+	"routes": [
+		{
+			"pattern": "mywordsmatter.app",
+			"custom_domain": true
+		}
+	],
+	"vars": {
+		"ADMIN_EMAILS": "elizabethgcrose@gmail.com,laura.m.sohl@gmail.com",
+		"EMAIL_FROM": "notifications@mywordsmatter.app",
+		"NEXT_PUBLIC_APP_URL": "https://mywordsmatter.app",
+		"NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY": "sb_publishable_89bFEvWyhazquPe0eNAGEQ_YIf5qK6H",
+		"NEXT_PUBLIC_SUPABASE_URL": "https://pqaqpoucwtcvlhjqwjzc.supabase.co",
+		"SUPPORT_TEAM_EMAILS": "support@mywordsmatter.app"
 	}
 }
