@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { createClient as createServiceClient } from "@supabase/supabase-js";
+
+export const dynamic = "force-dynamic";
 import { sendEmail } from "@/lib/email";
 
 function serviceClient() {
