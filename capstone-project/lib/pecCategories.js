@@ -1,10 +1,10 @@
 export const PEC_CATEGORIES = [
-  { id: "people", label: "People", query: "people" },
-  { id: "places", label: "Places", query: "places" },
-  { id: "things", label: "Things", query: "objects" },
-  { id: "actions", label: "Actions", query: "actions" },
-  { id: "feelings", label: "Feelings", query: "feelings" },
-  { id: "food", label: "Food & Drink", query: "food" },
-  { id: "animals", label: "Animals", query: "animals" },
-  { id: "clothing", label: "Clothing", query: "clothing" },
+  { id: "people", label: "People", queries: ["people", "family", "children"] },
+  { id: "places", label: "Places", queries: ["places", "school", "home"] },
+  { id: "things", label: "Things", queries: ["objects", "toys"] },
+  { id: "actions", label: "Actions", queries: ["actions", "verbs"] },
+  { id: "feelings", label: "Feelings", queries: ["feelings", "emotions"] },
+  { id: "food", label: "Food & Drink", queries: ["food", "fruit", "drinks"] },
+  { id: "animals", label: "Animals", queries: ["animals", "pets", "farm animals"] },
+  { id: "clothing", label: "Clothing", queries: ["clothing", "shoes"] },
 ];
