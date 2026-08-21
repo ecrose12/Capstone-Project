@@ -1,1 +1,0 @@
-globalThis.__RSC_MANIFEST=(globalThis.__RSC_MANIFEST||{});globalThis.__RSC_MANIFEST["/apple-icon/route"]={"moduleLoading":{"prefix":"/_next/"},"ssrModuleMapping":{},"edgeSSRModuleMapping":{},"clientModules":{},"entryCSSFiles":{"/Users/elizabethcrose/Documents/GitHub/Capstone Project/capstone-project/app/apple-icon/route":[]},"rscModuleMapping":{},"edgeRscModuleMapping":{}};
