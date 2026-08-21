@@ -11,6 +11,7 @@ export default function NavMenu() {
   const { theme, toggleTheme, loading: themeLoading } = useTheme();
   const [open, setOpen] = useState(false);
   const [accountOpen, setAccountOpen] = useState(false);
+  const [aboutOpen, setAboutOpen] = useState(false);
   const menuRef = useRef(null);
   const buttonRef = useRef(null);
   const supabase = createClient();
@@ -43,7 +44,10 @@ export default function NavMenu() {
   }, [open]);
 
   useEffect(() => {
-    if (!open) setAccountOpen(false);
+    if (!open) {
+      setAccountOpen(false);
+      setAboutOpen(false);
+    }
   }, [open]);
 
   async function handleSignOut() {
@@ -178,6 +182,52 @@ export default function NavMenu() {
             <Link href="/resources" role="menuitem" className="nav-menu__item" onClick={() => setOpen(false)}>
               Resource Links
             </Link>
+          </div>
+
+          <hr className="nav-menu__divider" />
+
+          <div className="nav-menu__section" role="none">
+            <button
+              type="button"
+              className="nav-menu__item nav-menu__account-toggle"
+              aria-expanded={aboutOpen}
+              aria-controls="nav-menu-about-submenu"
+              onClick={() => setAboutOpen((prev) => !prev)}
+            >
+              About
+              <span className="nav-menu__account-caret" aria-hidden="true">
+                {aboutOpen ? "▲" : "▼"}
+              </span>
+            </button>
+
+            {aboutOpen && (
+              <div id="nav-menu-about-submenu" className="nav-menu__submenu" role="none">
+                <Link
+                  href="/about"
+                  role="menuitem"
+                  className="nav-menu__item nav-menu__subitem"
+                  onClick={() => setOpen(false)}
+                >
+                  About My Words Matter
+                </Link>
+                <Link
+                  href="/team"
+                  role="menuitem"
+                  className="nav-menu__item nav-menu__subitem"
+                  onClick={() => setOpen(false)}
+                >
+                  Meet the Creators
+                </Link>
+                <Link
+                  href="/coming-soon"
+                  role="menuitem"
+                  className="nav-menu__item nav-menu__subitem"
+                  onClick={() => setOpen(false)}
+                >
+                  Coming Soon
+                </Link>
+              </div>
+            )}
           </div>
 
           <hr className="nav-menu__divider" />
