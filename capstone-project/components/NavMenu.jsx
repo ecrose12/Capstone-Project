@@ -87,6 +87,23 @@ export default function NavMenu() {
           <hr className="nav-menu__divider" />
 
           <div className="nav-menu__section" role="none">
+            <Link href="/pec" role="menuitem" className="nav-menu__item" onClick={() => setOpen(false)}>
+              Single PEC Card
+            </Link>
+            <Link href="/sentence" role="menuitem" className="nav-menu__item" onClick={() => setOpen(false)}>
+              Sentence Creator
+            </Link>
+            <Link href="/favorites" role="menuitem" className="nav-menu__item" onClick={() => setOpen(false)}>
+              Favorite PECs
+            </Link>
+            <Link href="/emergency" role="menuitem" className="nav-menu__item" onClick={() => setOpen(false)}>
+              Emergency
+            </Link>
+          </div>
+
+          <hr className="nav-menu__divider" />
+
+          <div className="nav-menu__section" role="none">
             {!modeLoading && (
               <>
                 <button
