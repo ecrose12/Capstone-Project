@@ -1,3 +1,4 @@
+import Image from "next/image";
 import "./team-page.css";
 
 export default function TeamPage() {
@@ -9,12 +10,22 @@ export default function TeamPage() {
       </p>
 
       <div className="team-page__grid">
-        {/* Placeholder — replace with real names/bios/photos */}
         <div className="team-page__card">
+          <Image
+            src="/team/elizabeth-crose.jpg"
+            alt="Elizabeth Crose"
+            width={200}
+            height={200}
+            className="team-page__photo"
+          />
           <h2>Elizabeth Crose</h2>
           <p>Creator bio goes here.</p>
         </div>
+        {/* Placeholder — replace with real photo/bio */}
         <div className="team-page__card">
+          <div className="team-page__photo team-page__photo--placeholder" aria-hidden="true">
+            +
+          </div>
           <h2>Laura Sohl</h2>
           <p>Creator bio goes here.</p>
         </div>
