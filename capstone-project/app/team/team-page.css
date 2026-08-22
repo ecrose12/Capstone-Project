@@ -60,5 +60,33 @@
 
 .team-page__card p {
   color: var(--color-text-secondary);
-  margin: 0;
+  margin: 0 0 0.75rem;
+  text-align: left;
+  line-height: 1.55;
+}
+
+.team-page__toolkit-label {
+  font-weight: 700;
+  color: var(--color-text) !important;
+  margin-bottom: 0.4rem !important;
+}
+
+.team-page__toolkit-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 0.75rem;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.team-page__toolkit-list li {
+  color: var(--color-text-secondary);
+  font-size: 0.95rem;
+}
+
+.team-page__card a {
+  color: var(--color-accent-strong);
+  font-weight: 700;
 }
