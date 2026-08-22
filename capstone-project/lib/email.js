@@ -1,9 +1,15 @@
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+let resend;
+function getResendClient() {
+  if (!resend) {
+    resend = new Resend(process.env.RESEND_API_KEY);
+  }
+  return resend;
+}
 
 export async function sendEmail({ to, subject, html, replyTo, from }) {
-  const result = await resend.emails.send({
+  const result = await getResendClient().emails.send({
     from: from || process.env.EMAIL_FROM || "My Words Matter <onboarding@resend.dev>",
     to,
     subject,

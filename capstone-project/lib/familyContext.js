@@ -11,6 +11,16 @@ function serviceClient() {
   );
 }
 
+async function getFamilyType(svc, familyId) {
+  if (!familyId) return null;
+  const { data } = await svc
+    .from("families")
+    .select("family_type")
+    .eq("id", familyId)
+    .maybeSingle();
+  return data?.family_type ?? null;
+}
+
 export async function resolveFamilyContext() {
   const supabase = await createServerClient();
   const { data: { user } } = await supabase.auth.getUser();
@@ -23,16 +33,32 @@ export async function resolveFamilyContext() {
       .maybeSingle();
 
     if (data) {
-      return { familyId: data.family_id, isParent: data.role === "parent", userId: user.id, role: data.role };
+      const svc = serviceClient();
+      const familyType = await getFamilyType(svc, data.family_id);
+      return {
+        familyId: data.family_id,
+        isParent: data.role === "parent",
+        alwaysSafeSearch: familyType === "school",
+        familyType,
+        userId: user.id,
+        role: data.role,
+      };
     }
-    // Signed in, but not yet linked to any family
-    return { familyId: null, isParent: false, userId: user.id, role: null };
+    return {
+      familyId: null,
+      isParent: false,
+      alwaysSafeSearch: false,
+      familyType: null,
+      userId: user.id,
+      role: null,
+    };
   }
 
-  // Not logged in — check for a paired device token (unchanged from before)
   const cookieStore = await cookies();
   const deviceToken = cookieStore.get("device_token")?.value;
-  if (!deviceToken) return { familyId: null, isParent: false };
+  if (!deviceToken) {
+    return { familyId: null, isParent: false, alwaysSafeSearch: false, familyType: null };
+  }
 
   const svc = serviceClient();
   const { data: device } = await svc
@@ -41,10 +67,18 @@ export async function resolveFamilyContext() {
     .eq("device_token_hash", hashToken(deviceToken))
     .maybeSingle();
 
-  if (!device) return { familyId: null, isParent: false };
+  if (!device) {
+    return { familyId: null, isParent: false, alwaysSafeSearch: false, familyType: null };
+  }
 
   svc.from("devices").update({ last_seen_at: new Date().toISOString() })
     .eq("device_token_hash", hashToken(deviceToken)).then(() => {});
 
-  return { familyId: device.family_id, isParent: false };
+  const familyType = await getFamilyType(svc, device.family_id);
+  return {
+    familyId: device.family_id,
+    isParent: false,
+    alwaysSafeSearch: familyType === "school",
+    familyType,
+  };
 }

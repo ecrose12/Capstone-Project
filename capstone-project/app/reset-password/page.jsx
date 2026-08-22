@@ -2,7 +2,6 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import PasswordField from "@/components/PasswordField";
 import "./reset-password-page.css";
 
 export default function ResetPasswordPage() {
@@ -72,20 +71,20 @@ export default function ResetPasswordPage() {
       <form onSubmit={handleSubmit} className="reset-password-page__card">
         <h1>Set a New Password</h1>
         <label htmlFor="new-password">New Password</label>
-        <PasswordField
+        <input
           id="new-password"
+          type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          autoComplete="new-password"
           minLength={8}
           required
         />
         <label htmlFor="confirm-password">Confirm New Password</label>
-        <PasswordField
+        <input
           id="confirm-password"
+          type="password"
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
-          autoComplete="new-password"
           minLength={8}
           required
         />
