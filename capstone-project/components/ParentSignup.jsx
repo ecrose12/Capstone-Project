@@ -2,6 +2,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
+import PasswordField from "@/components/PasswordField";
 import "./ParentSignup.css";
 
 const STEP_CHOOSE_TYPE = "choose-type";
@@ -150,7 +151,14 @@ export default function ParentSignup() {
           <label htmlFor="signup-email">Email</label>
           <input id="signup-email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
           <label htmlFor="signup-password">Password</label>
-          <input id="signup-password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} minLength={8} required />
+          <PasswordField
+            id="signup-password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            autoComplete="new-password"
+            minLength={8}
+            required
+          />
 
           {(accountType === "family" || accountType === "school") && (
             <>
