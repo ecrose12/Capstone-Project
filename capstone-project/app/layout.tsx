@@ -4,6 +4,7 @@ import "./globals.css";
 import { ParentModeProvider } from "@/context/ParentModeContext";
 import { ThemeProvider } from "@/context/ThemeContext";
 import NavMenu from "@/components/NavMenu";
+import AccountBadge from "@/components/AccountBadge";
 import SiteHeader from "@/components/SiteHeader";
 import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
 
@@ -43,6 +44,7 @@ export default function RootLayout({
           <ParentModeProvider>
             <SiteHeader />
             <NavMenu />
+            <AccountBadge />
             <main className="flex-1 w-full page-content">
               {children}
             </main>

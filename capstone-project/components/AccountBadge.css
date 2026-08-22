@@ -1,0 +1,105 @@
+.account-badge {
+  position: fixed;
+  top: 0.75rem;
+  right: 0.75rem;
+  z-index: 950;
+  display: flex;
+  align-items: center;
+}
+
+.account-badge--active {
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--color-text);
+  background: var(--color-bg);
+  border: 2px solid var(--color-border);
+  border-radius: 999px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.account-badge--active:hover,
+.account-badge--active:focus-visible {
+  background: var(--color-bg-subtle);
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.account-badge__label {
+  display: inline;
+}
+
+.account-badge--guest {
+  gap: 0.5rem;
+}
+
+.account-badge__guest-link {
+  display: flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  border-radius: 999px;
+  text-decoration: none;
+  white-space: nowrap;
+  border: 2px solid var(--color-border);
+}
+
+.account-badge__guest-link:not(.account-badge__guest-link--primary) {
+  color: var(--color-text);
+  background: var(--color-bg);
+}
+
+.account-badge__guest-link:not(.account-badge__guest-link--primary):hover,
+.account-badge__guest-link:not(.account-badge__guest-link--primary):focus-visible {
+  background: var(--color-bg-subtle);
+}
+
+.account-badge__guest-link--primary {
+  color: #ffffff;
+  background: var(--color-accent-strong);
+  border-color: var(--color-accent-strong);
+}
+
+.account-badge__guest-link--primary:hover,
+.account-badge__guest-link--primary:focus-visible {
+  filter: brightness(1.1);
+}
+
+.account-badge__guest-link:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+@media (max-width: 480px) {
+  .account-badge {
+    top: 0.5rem;
+    right: 0.5rem;
+  }
+
+  .account-badge--active {
+    min-height: 2.5rem;
+    padding: 0.5rem 0.65rem;
+  }
+
+  .account-badge__label {
+    display: none;
+  }
+
+  .account-badge__guest-link {
+    min-height: 2.5rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+  }
+}
+
+@media print {
+  .account-badge {
+    display: none !important;
+  }
+}
