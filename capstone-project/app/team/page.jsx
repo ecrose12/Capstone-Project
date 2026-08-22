@@ -120,6 +120,13 @@ export default function TeamPage() {
             development, as well as program management.
           </p>
 
+           <p>
+            📎 LinkedIn:{" "}
+            <a href="https://www.linkedin.com/in/laura-sohl-smith/" target="_blank" rel="noopener noreferrer">
+              linkedin.com/in/laura-sohl-smith
+            </a>
+          </p>
+
           <p>
             📎 Portfolio:{" "}
             <a href="http://sohlsmith.com/" target="_blank" rel="noopener noreferrer">
