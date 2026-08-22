@@ -1,12 +1,6 @@
-/* Fixed to the top-right of the viewport on every page, so it's always
-   visible and clickable regardless of scroll position or which category
-   page is showing. Positioned top-right specifically to avoid overlapping
-   the ☰ nav menu trigger, which conventionally sits top-left. */
+/* Now rendered inside SiteHeader, centered below the title — no longer
+   independently fixed/floating in a page corner. */
 .intro-message {
-  position: fixed;
-  top: 0.75rem;
-  right: 0.75rem;
-  z-index: 900; /* below the nav dropdown/modals, above normal page content */
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -192,16 +186,9 @@
   cursor: not-allowed;
 }
 
-/* Smaller screens: stack instead of squeezing the label + edit button
-   into a tight corner, and drop to a slightly smaller (still large)
-   touch target so it doesn't dominate a small viewport. */
+/* Smaller screens: drop to a slightly smaller (still large) touch
+   target so it doesn't dominate a small viewport. */
 @media (max-width: 480px) {
-  .intro-message {
-    top: 0.5rem;
-    right: 0.5rem;
-    left: 0.5rem;
-    justify-content: flex-end;
-  }
   .intro-message__speak-button {
     min-height: 3rem;
     padding: 0.6rem 1.1rem;
@@ -214,7 +201,7 @@
   }
 }
 
-/* Print: never show the floating button on printed pages */
+/* Print: never show the button on printed pages */
 @media print {
   .intro-message {
     display: none !important;

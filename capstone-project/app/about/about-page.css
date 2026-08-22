@@ -1,0 +1,116 @@
+.about-page {
+  max-width: 780px;
+  margin: 2rem auto;
+  padding: 0 1.5rem 3rem;
+}
+
+.about-page h1 {
+  text-align: center;
+  font-size: clamp(1.75rem, 5vw, 2.25rem);
+  font-weight: 800;
+  color: var(--color-text);
+  margin: 0 0 1.5rem;
+}
+
+.about-page h2 {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--color-text);
+  margin: 2rem 0 1rem;
+}
+
+.about-page h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin: 1.5rem 0 0.75rem;
+}
+
+.about-page h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-accent-strong);
+  margin: 1.25rem 0 0.5rem;
+}
+
+.about-page p {
+  font-size: 1.02rem;
+  line-height: 1.65;
+  color: var(--color-text);
+  margin: 0 0 1rem;
+}
+
+.about-page__placeholder-note {
+  color: var(--color-text-secondary);
+}
+
+.about-page__divider {
+  border: none;
+  border-top: 2px solid var(--color-border-subtle);
+  margin: 2rem 0;
+}
+
+.about-page ul,
+.about-page ol {
+  padding-left: 1.5rem;
+  margin: 0 0 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.about-page ul li,
+.about-page ol li {
+  font-size: 1.02rem;
+  line-height: 1.6;
+  color: var(--color-text);
+}
+
+.about-page__numbered-list {
+  gap: 1.25rem;
+}
+
+.about-page__numbered-list > li > strong {
+  display: block;
+  font-size: 1.05rem;
+  margin-bottom: 0.35rem;
+  color: var(--color-text);
+}
+
+.about-page__numbered-list > li > p {
+  margin: 0;
+}
+
+.about-page__numbered-list > li > ul {
+  margin-top: 0.5rem;
+}
+
+.about-page__table-wrap {
+  overflow-x: auto;
+  margin: 0 0 1.5rem;
+  border: 2px solid var(--color-border-subtle);
+  border-radius: 12px;
+}
+
+.about-page__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.about-page__table th,
+.about-page__table td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--color-border-subtle);
+  color: var(--color-text);
+}
+
+.about-page__table th {
+  background: var(--color-bg-subtle);
+  font-weight: 700;
+}
+
+.about-page__table tr:last-child td {
+  border-bottom: none;
+}

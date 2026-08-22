@@ -11,11 +11,11 @@ export default function NavMenu() {
   const { theme, toggleTheme, loading: themeLoading } = useTheme();
   const [open, setOpen] = useState(false);
   const [accountOpen, setAccountOpen] = useState(false);
+  const [aboutOpen, setAboutOpen] = useState(false);
   const menuRef = useRef(null);
   const buttonRef = useRef(null);
   const supabase = createClient();
 
-  // Close on outside click
   useEffect(() => {
     if (!open) return;
     function handleClickOutside(e) {
@@ -31,7 +31,6 @@ export default function NavMenu() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [open]);
 
-  // Close on Escape, return focus to the trigger button
   useEffect(() => {
     if (!open) return;
     function handleKeyDown(e) {
@@ -44,10 +43,11 @@ export default function NavMenu() {
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [open]);
 
-  // Collapse the Account submenu whenever the whole menu closes, so it
-  // doesn't reopen already-expanded next time.
   useEffect(() => {
-    if (!open) setAccountOpen(false);
+    if (!open) {
+      setAccountOpen(false);
+      setAboutOpen(false);
+    }
   }, [open]);
 
   async function handleSignOut() {
@@ -57,6 +57,13 @@ export default function NavMenu() {
 
   const isParent = mode === "parent";
   const isFamilyAccount = familyType === "family";
+  const isSchoolAccount = familyType === "school";
+
+  const signOutLabel = isSchoolAccount
+    ? "Exit Teacher Mode"
+    : isFamilyAccount
+    ? "Exit Parent/Caregiver Mode"
+    : "Sign Out";
 
   return (
     <nav className="nav-menu">
@@ -75,28 +82,9 @@ export default function NavMenu() {
 
       {open && (
         <div id="nav-menu-dropdown" ref={menuRef} className="nav-menu__dropdown" role="menu">
-          {/* Home navigation */}
           <div className="nav-menu__section" role="none">
             <Link href="/" role="menuitem" className="nav-menu__item" onClick={() => setOpen(false)}>
               Home
-            </Link>
-          </div>
-
-          <hr className="nav-menu__divider" />
-
-          {/* Account section — collapsed submenu */}
-          <div className="nav-menu__section" role="none">
-            <Link href="/pec" role="menuitem" className="nav-menu__item" onClick={() => setOpen(false)}>
-              Single PEC Card
-            </Link>
-            <Link href="/sentence" role="menuitem" className="nav-menu__item" onClick={() => setOpen(false)}>
-              Sentence Creator
-            </Link>
-            <Link href="/favorites" role="menuitem" className="nav-menu__item" onClick={() => setOpen(false)}>
-              Favorite PECs
-            </Link>
-            <Link href="/emergency" role="menuitem" className="nav-menu__item" onClick={() => setOpen(false)}>
-              Emergency
             </Link>
           </div>
 
@@ -136,7 +124,7 @@ export default function NavMenu() {
                           className="nav-menu__item nav-menu__subitem"
                           onClick={handleSignOut}
                         >
-                          {isFamilyAccount ? "Exit Parent/Caregiver Mode" : "Sign Out"}
+                          {signOutLabel}
                         </button>
                       </>
                     ) : (
@@ -167,7 +155,6 @@ export default function NavMenu() {
 
           <hr className="nav-menu__divider" />
 
-          {/* Settings */}
           <div className="nav-menu__section" role="none">
             <Link href="/settings" role="menuitem" className="nav-menu__item" onClick={() => setOpen(false)}>
               Settings
@@ -176,7 +163,6 @@ export default function NavMenu() {
 
           <hr className="nav-menu__divider" />
 
-          {/* Light/Dark toggle */}
           <div className="nav-menu__section" role="none">
             <button
               type="button"
@@ -192,7 +178,6 @@ export default function NavMenu() {
 
           <hr className="nav-menu__divider" />
 
-          {/* Resources */}
           <div className="nav-menu__section" role="none">
             <Link href="/resources" role="menuitem" className="nav-menu__item" onClick={() => setOpen(false)}>
               Resource Links
@@ -201,7 +186,52 @@ export default function NavMenu() {
 
           <hr className="nav-menu__divider" />
 
-          {/* Support */}
+          <div className="nav-menu__section" role="none">
+            <button
+              type="button"
+              className="nav-menu__item nav-menu__account-toggle"
+              aria-expanded={aboutOpen}
+              aria-controls="nav-menu-about-submenu"
+              onClick={() => setAboutOpen((prev) => !prev)}
+            >
+              About
+              <span className="nav-menu__account-caret" aria-hidden="true">
+                {aboutOpen ? "▲" : "▼"}
+              </span>
+            </button>
+
+            {aboutOpen && (
+              <div id="nav-menu-about-submenu" className="nav-menu__submenu" role="none">
+                <Link
+                  href="/about"
+                  role="menuitem"
+                  className="nav-menu__item nav-menu__subitem"
+                  onClick={() => setOpen(false)}
+                >
+                  About My Words Matter
+                </Link>
+                <Link
+                  href="/team"
+                  role="menuitem"
+                  className="nav-menu__item nav-menu__subitem"
+                  onClick={() => setOpen(false)}
+                >
+                  Meet the Creators
+                </Link>
+                <Link
+                  href="/coming-soon"
+                  role="menuitem"
+                  className="nav-menu__item nav-menu__subitem"
+                  onClick={() => setOpen(false)}
+                >
+                  Coming Soon
+                </Link>
+              </div>
+            )}
+          </div>
+
+          <hr className="nav-menu__divider" />
+
           <div className="nav-menu__section" role="none">
             <Link href="/support" role="menuitem" className="nav-menu__item" onClick={() => setOpen(false)}>
               Contact Support

@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import IntroductionMessageButton from "@/components/IntroductionMessageButton";
 import "./SiteHeader.css";
 
 export default function SiteHeader() {
@@ -8,6 +9,7 @@ export default function SiteHeader() {
       <Link href="/" className="site-header__title">
         My Words Matter
       </Link>
+      <IntroductionMessageButton />
     </header>
   );
 }
