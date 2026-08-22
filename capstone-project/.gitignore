@@ -44,3 +44,4 @@ public/sw.js.map
 public/swe-worker-*.js
 .open-next/
 public/sw.js
+public/sw *.js
