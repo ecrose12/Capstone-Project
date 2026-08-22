@@ -1,7 +1,6 @@
 // app/api/pairing/generate/route.js
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
-
 export const dynamic = "force-dynamic";
 import { createClient as createServiceClient } from "@supabase/supabase-js";
 import { generatePairingCode } from "@/lib/deviceToken";
@@ -26,17 +25,25 @@ export async function POST() {
   }
 
   const svc = serviceClient();
-
-  const { data: membership } = await svc
-    .from("family_parents")
-    .select("family_id")
-    .eq("parent_id", user.id)
+  const { data: membership, error: membershipError } = await svc
+    .from("family_members")
+    .select("family_id, role")
+    .eq("user_id", user.id)
     .maybeSingle();
 
+  if (membershipError) {
+    return NextResponse.json({ error: membershipError.message }, { status: 500 });
+  }
   if (!membership) {
     return NextResponse.json(
       { error: "No family found for this account. Sign in on this device first to create one." },
       { status: 400 }
+    );
+  }
+  if (membership.role !== "parent") {
+    return NextResponse.json(
+      { error: "Only a parent/admin can generate a pairing code." },
+      { status: 403 }
     );
   }
 
@@ -44,14 +51,12 @@ export async function POST() {
   for (let attempt = 0; attempt < 2; attempt++) {
     const code = generatePairingCode();
     const expiresAt = new Date(Date.now() + CODE_LIFETIME_MS).toISOString();
-
     const { error } = await svc.from("pairing_codes").insert({
       code,
       family_id: membership.family_id,
       created_by: user.id,
       expires_at: expiresAt,
     });
-
     if (!error) {
       return NextResponse.json({ code, expiresAt });
     }
