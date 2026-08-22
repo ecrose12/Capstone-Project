@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
+import PasswordField from "@/components/PasswordField";
 import "./ParentLogin.css";
 
 export default function ParentLogin({ onModeChange }) {
@@ -27,7 +28,13 @@ export default function ParentLogin({ onModeChange }) {
       <label htmlFor="login-email">Email</label>
       <input id="login-email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
       <label htmlFor="login-password">Password</label>
-      <input id="login-password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+      <PasswordField
+        id="login-password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        autoComplete="current-password"
+        required
+      />
       {error && <p role="alert">{error}</p>}
       <button type="submit">Log In</button>
     </form>
