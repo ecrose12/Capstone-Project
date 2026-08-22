@@ -163,7 +163,7 @@ export default function SettingsPage() {
         )}
       </section>
 
-      {(isFamilyAccount || isSchoolAccount) && (
+      {(isFamilyAccount || isSchoolAccount || !hasFamily) && (
         <section className="settings-page__section">
           <h2>Device Pairing</h2>
           {hasFamily ? (
