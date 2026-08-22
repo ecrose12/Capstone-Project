@@ -1,12 +1,18 @@
 .site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 950;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 5rem;
-  padding: 0 3.5rem; /* reserve horizontal space so the title never sits under
-                       the fixed nav trigger (left) or intro button (right) */
+  gap: 0.75rem;
+  padding: 1.25rem 3.5rem 1rem;
   background: var(--color-bg);
   border-bottom: 3px solid var(--color-border);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
 }
 
 .site-header__title {
@@ -28,20 +34,46 @@
 
 @media (max-width: 640px) {
   .site-header {
-    height: 4.5rem;
-    padding: 0 3rem;
+    padding: 1rem 3rem 0.75rem;
   }
 }
 
 @media (max-width: 480px) {
   .site-header {
-    height: 4rem;
-    padding: 0 2.5rem;
+    padding: 0.85rem 2.5rem 0.65rem;
   }
 }
 
 @media print {
   .site-header {
+    position: static;
     border-bottom: 2px solid #000;
+    box-shadow: none;
+  }
+}
+
+/* Reserves space at the top of every page's content so it isn't hidden
+   underneath the now-fixed header. These values are estimates based on
+   the header's typical rendered height — nudge if content still looks
+   slightly cut off or has too much gap once viewed live. */
+.page-content {
+  padding-top: 11rem;
+}
+
+@media (max-width: 640px) {
+  .page-content {
+    padding-top: 9.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-content {
+    padding-top: 8.5rem;
+  }
+}
+
+@media print {
+  .page-content {
+    padding-top: 0;
   }
 }
