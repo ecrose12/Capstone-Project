@@ -76,6 +76,9 @@ export default function TeamPage() {
           <h2>Laura Sohl</h2>
 
           <p>
+            Laura is a Full Stack Developer and co-creator of My Words
+            Matter, built during the OKCoders 2026 Full Stack,
+            AI-Enhanced Software Development bootcamp through Techlahoma. 
             With an M.S. in Industrial/Organizational Psychology, Laura
             brings something many designers and developers don't — a
             research-backed understanding of human behavior. She likes
