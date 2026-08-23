@@ -4,9 +4,11 @@ import { useParentMode } from "@/context/ParentModeContext";
 import PecSlot from "../PecSlot";
 import SpeakButton from "../SpeakButton";
 import "./TodayScheduleTemplate.css";
+import SaveTargetPicker from "../SaveTargetPicker";
 
 const DEFAULT_ROWS = ["Morning", "Afternoon", "Evening"];
 const DEFAULT_ROWS_PER_SECTION = 3;
+
 
 function makeBlankItem() {
   return {
@@ -32,6 +34,7 @@ export default function TodayScheduleTemplate({ category }) {
   const [hasFamily, setHasFamily] = useState(false);
   const [status, setStatus] = useState("loading"); // loading | ready | saving | saved | error
   const [sectionsToPrint, setSectionsToPrint] = useState(() => new Set(rows));
+  const [saveTarget, setSaveTarget] = useState(null);
 
   useEffect(() => {
     if (modeLoading) return;
@@ -148,13 +151,13 @@ export default function TodayScheduleTemplate({ category }) {
     }
   }
 
-  async function saveStructure() {
+    async function saveStructure() {
     setStatus("saving");
     try {
       const res = await fetch("/api/schedule", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ category_id: category.id, data: scheduleData }),
+        body: JSON.stringify({ category_id: category.id, data: scheduleData, device_id: saveTarget }),
       });
 
       if (!res.ok) {
@@ -334,11 +337,14 @@ export default function TodayScheduleTemplate({ category }) {
         ))}
       </fieldset>
 
-      <div className="today-schedule__actions">
+            <div className="today-schedule__actions">
         {isParent && (
-          <button type="button" onClick={saveStructure} disabled={status === "saving"}>
-            {status === "saving" ? "Saving…" : status === "saved" ? "Saved ✓" : "Save Schedule"}
-          </button>
+          <>
+            <SaveTargetPicker value={saveTarget} onChange={setSaveTarget} />
+            <button type="button" onClick={saveStructure} disabled={status === "saving"}>
+              {status === "saving" ? "Saving…" : status === "saved" ? "Saved ✓" : "Save Schedule"}
+            </button>
+          </>
         )}
         <button type="button" onClick={handlePrint} className="today-schedule__print">
           {isGuestBuilding ? "Download / Print" : "Print"}

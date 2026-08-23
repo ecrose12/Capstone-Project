@@ -19,7 +19,6 @@ export async function GET(request) {
 
   const { familyId, isParent } = await resolveFamilyContext();
 
-  // No family resolved (guest, or parent with no family yet) — nothing saved to return.
   if (!familyId) {
     return NextResponse.json({ data: null, isParent, hasFamily: false });
   }
@@ -30,6 +29,7 @@ export async function GET(request) {
     .select("data, updated_at")
     .eq("family_id", familyId)
     .eq("category_id", categoryId)
+    .is("device_id", null)
     .maybeSingle();
 
   if (error) {
@@ -48,7 +48,6 @@ export async function POST(request) {
   const { familyId, isParent } = await resolveFamilyContext();
 
   if (!isParent) {
-    // Only an authenticated parent may write — device-paired children get read-only access.
     return NextResponse.json({ error: "Only a signed-in parent can save a schedule" }, { status: 403 });
   }
 
@@ -66,23 +65,50 @@ export async function POST(request) {
     return NextResponse.json({ error: "Invalid request body" }, { status: 400 });
   }
 
-  const { category_id: categoryId, data } = body || {};
+  const { category_id: categoryId, data, device_id: deviceId } = body || {};
   if (!categoryId || typeof data !== "object" || data === null) {
     return NextResponse.json({ error: "Missing category_id or data" }, { status: 400 });
   }
 
   const svc = serviceClient();
-  const { error } = await svc
+
+  if (deviceId) {
+    const { data: device } = await svc
+      .from("devices")
+      .select("id")
+      .eq("id", deviceId)
+      .eq("family_id", familyId)
+      .maybeSingle();
+    if (!device) {
+      return NextResponse.json({ error: "That device wasn't found for this account." }, { status: 400 });
+    }
+  }
+
+  let existingQuery = svc
     .from("schedules")
-    .upsert(
-      {
-        family_id: familyId,
-        category_id: categoryId,
-        data,
-        updated_at: new Date().toISOString(),
-      },
-      { onConflict: "family_id,category_id" }
-    );
+    .select("id")
+    .eq("family_id", familyId)
+    .eq("category_id", categoryId);
+  existingQuery = deviceId
+    ? existingQuery.eq("device_id", deviceId)
+    : existingQuery.is("device_id", null);
+
+  const { data: existing, error: findError } = await existingQuery.maybeSingle();
+  if (findError) {
+    return NextResponse.json({ error: findError.message }, { status: 500 });
+  }
+
+  const payload = {
+    family_id: familyId,
+    category_id: categoryId,
+    device_id: deviceId || null,
+    data,
+    updated_at: new Date().toISOString(),
+  };
+
+  const { error } = existing
+    ? await svc.from("schedules").update(payload).eq("id", existing.id)
+    : await svc.from("schedules").insert(payload);
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });

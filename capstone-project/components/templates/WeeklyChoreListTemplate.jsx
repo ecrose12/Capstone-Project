@@ -123,13 +123,13 @@ export default function WeeklyChoreListTemplate({ category }) {
     }
   }
 
-  async function saveStructure() {
+    async function saveStructure() {
     setStatus("saving");
     try {
       const res = await fetch("/api/schedule", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ category_id: category.id, data: scheduleData }),
+        body: JSON.stringify({ category_id: category.id, data: scheduleData, device_id: saveTarget }),
       });
 
       if (!res.ok) {
@@ -244,11 +244,14 @@ export default function WeeklyChoreListTemplate({ category }) {
         })}
       </div>
 
-      <div className="weekly-chore__actions">
+            <div className="weekly-chore__actions">
         {isParent && (
-          <button type="button" onClick={saveStructure} disabled={status === "saving"}>
-            {status === "saving" ? "Saving…" : status === "saved" ? "Saved ✓" : "Save Chore List"}
-          </button>
+          <>
+            <SaveTargetPicker value={saveTarget} onChange={setSaveTarget} />
+            <button type="button" onClick={saveStructure} disabled={status === "saving"}>
+              {status === "saving" ? "Saving…" : status === "saved" ? "Saved ✓" : "Save Chore List"}
+            </button>
+          </>
         )}
         <button type="button" onClick={handlePrint} className="weekly-chore__print">
           {isGuestBuilding ? "Download / Print" : "Print"}

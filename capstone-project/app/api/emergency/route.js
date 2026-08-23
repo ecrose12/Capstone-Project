@@ -11,9 +11,6 @@ function serviceClient() {
   );
 }
 
-// Each default phrase paired with a simpler search keyword — OpenSymbols'
-// library matches single concepts much better than full sentences, so
-// "I need medical assistance" searches "medical" rather than the whole phrase.
 const DEFAULT_PRESET_PHRASES = [
   { text: "I need help", query: "help" },
   { text: "I am hurt", query: "hurt" },
@@ -29,8 +26,6 @@ const DEFAULT_PRESET_PHRASES = [
   { text: "Call 911", query: "911" },
 ];
 
-// In-memory cache so the default set only gets searched once per server
-// instance, not on every request from every guest/first-time viewer.
 let cachedDefaults = null;
 
 async function getDefaultPresetCards() {
@@ -51,20 +46,16 @@ async function getDefaultPresetCards() {
           : null;
         return { id: text, text, card };
       } catch {
-        // If a single lookup fails (rate limit, network hiccup), fall back
-        // to no image for that one phrase rather than failing the whole set.
         return { id: text, text, card: null };
       }
     })
   );
-
   cachedDefaults = results;
   return results;
 }
 
 export async function GET() {
   const { familyId, isParent } = await resolveFamilyContext();
-
   if (!familyId) {
     return NextResponse.json({
       hasFamily: false,
@@ -78,18 +69,16 @@ export async function GET() {
       showEmergencyContact: false,
     });
   }
-
   const svc = serviceClient();
   const { data, error } = await svc
     .from("emergency_info")
     .select("*")
     .eq("family_id", familyId)
+    .is("device_id", null)
     .maybeSingle();
-
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
-
   return NextResponse.json({
     hasFamily: true,
     isParent,
@@ -108,21 +97,18 @@ export async function GET() {
 
 export async function POST(request) {
   const { familyId, isParent } = await resolveFamilyContext();
-
   if (!isParent) {
     return NextResponse.json({ error: "Only a signed-in parent can edit this" }, { status: 403 });
   }
   if (!familyId) {
     return NextResponse.json({ error: "No family found for this account" }, { status: 400 });
   }
-
   let body;
   try {
     body = await request.json();
   } catch {
     return NextResponse.json({ error: "Invalid request body" }, { status: 400 });
   }
-
   const {
     presetCards,
     basicInfo,
@@ -131,23 +117,49 @@ export async function POST(request) {
     showBasicInfo,
     showMedicalId,
     showEmergencyContact,
+    device_id: deviceId,
   } = body || {};
 
   const svc = serviceClient();
-  const { error } = await svc.from("emergency_info").upsert(
-    {
-      family_id: familyId,
-      preset_cards: presetCards ?? [],
-      basic_info: basicInfo ?? {},
-      medical_id: medicalId ?? {},
-      emergency_contact: emergencyContact ?? {},
-      show_basic_info: !!showBasicInfo,
-      show_medical_id: !!showMedicalId,
-      show_emergency_contact: !!showEmergencyContact,
-      updated_at: new Date().toISOString(),
-    },
-    { onConflict: "family_id" }
-  );
+
+  if (deviceId) {
+    const { data: device } = await svc
+      .from("devices")
+      .select("id")
+      .eq("id", deviceId)
+      .eq("family_id", familyId)
+      .maybeSingle();
+    if (!device) {
+      return NextResponse.json({ error: "That device wasn't found for this account." }, { status: 400 });
+    }
+  }
+
+  let existingQuery = svc.from("emergency_info").select("id").eq("family_id", familyId);
+  existingQuery = deviceId
+    ? existingQuery.eq("device_id", deviceId)
+    : existingQuery.is("device_id", null);
+
+  const { data: existing, error: findError } = await existingQuery.maybeSingle();
+  if (findError) {
+    return NextResponse.json({ error: findError.message }, { status: 500 });
+  }
+
+  const payload = {
+    family_id: familyId,
+    device_id: deviceId || null,
+    preset_cards: presetCards ?? [],
+    basic_info: basicInfo ?? {},
+    medical_id: medicalId ?? {},
+    emergency_contact: emergencyContact ?? {},
+    show_basic_info: !!showBasicInfo,
+    show_medical_id: !!showMedicalId,
+    show_emergency_contact: !!showEmergencyContact,
+    updated_at: new Date().toISOString(),
+  };
+
+  const { error } = existing
+    ? await svc.from("emergency_info").update(payload).eq("id", existing.id)
+    : await svc.from("emergency_info").insert(payload);
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
