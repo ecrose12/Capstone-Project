@@ -5,6 +5,7 @@ import "./GeneratePairingCode.css";
 const CODE_LIFETIME_SECONDS = 10 * 60;
 
 export default function GeneratePairingCode() {
+  const [deviceName, setDeviceName] = useState("");
   const [code, setCode] = useState(null);
   const [expiresAt, setExpiresAt] = useState(null);
   const [secondsLeft, setSecondsLeft] = useState(null);
@@ -27,7 +28,11 @@ export default function GeneratePairingCode() {
     clearTimer();
 
     try {
-      const res = await fetch("/api/pairing/generate", { method: "POST" });
+      const res = await fetch("/api/pairing/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ deviceName: deviceName.trim() }),
+      });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
         setError(data.error || "Couldn't generate a code. Try again.");
@@ -69,14 +74,29 @@ export default function GeneratePairingCode() {
       </p>
 
       {!code && (
-        <button
-          type="button"
-          onClick={generate}
-          disabled={loading}
-          className="generate-pairing-code__button"
-        >
-          {loading ? "Generating…" : "Generate Code"}
-        </button>
+        <>
+          <label htmlFor="pairing-device-name" className="generate-pairing-code__label">
+            Name this device (e.g. a student's name) — optional
+          </label>
+          <input
+            id="pairing-device-name"
+            type="text"
+            value={deviceName}
+            onChange={(e) => setDeviceName(e.target.value)}
+            placeholder="e.g. Emma's iPad"
+            maxLength={60}
+            className="generate-pairing-code__name-input"
+          />
+
+          <button
+            type="button"
+            onClick={generate}
+            disabled={loading}
+            className="generate-pairing-code__button"
+          >
+            {loading ? "Generating…" : "Generate Code"}
+          </button>
+        </>
       )}
 
       {code && (
@@ -89,8 +109,7 @@ export default function GeneratePairingCode() {
           </p>
           <button
             type="button"
-            onClick={generate}
-            disabled={loading}
+            onClick={() => setCode(null)}
             className="generate-pairing-code__regenerate"
           >
             Generate a new code

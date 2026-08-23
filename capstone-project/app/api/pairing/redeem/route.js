@@ -27,7 +27,7 @@ export async function POST(request) {
 
   const { data: pairing } = await svc
     .from("pairing_codes")
-    .select("family_id, expires_at, used")
+    .select("family_id, expires_at, used, device_name")
     .eq("code", code)
     .maybeSingle();
 
@@ -43,7 +43,7 @@ export async function POST(request) {
   const { error: deviceError } = await svc.from("devices").insert({
     family_id: pairing.family_id,
     device_token_hash: hash,
-    device_name: "Paired device",
+    device_name: pairing.device_name || "Paired device",
   });
 
   if (deviceError) {
