@@ -55,7 +55,7 @@ async function getDefaultPresetCards() {
 }
 
 export async function GET() {
-  const { familyId, isParent } = await resolveFamilyContext();
+  const { familyId, isParent, deviceId } = await resolveFamilyContext();
   if (!familyId) {
     return NextResponse.json({
       hasFamily: false,
@@ -69,16 +69,36 @@ export async function GET() {
       showEmergencyContact: false,
     });
   }
+
   const svc = serviceClient();
-  const { data, error } = await svc
-    .from("emergency_info")
-    .select("*")
-    .eq("family_id", familyId)
-    .is("device_id", null)
-    .maybeSingle();
-  if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  let data = null;
+
+  if (deviceId) {
+    const { data: deviceRow, error } = await svc
+      .from("emergency_info")
+      .select("*")
+      .eq("family_id", familyId)
+      .eq("device_id", deviceId)
+      .maybeSingle();
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+    data = deviceRow;
   }
+
+  if (!data) {
+    const { data: sharedRow, error } = await svc
+      .from("emergency_info")
+      .select("*")
+      .eq("family_id", familyId)
+      .is("device_id", null)
+      .maybeSingle();
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+    data = sharedRow;
+  }
+
   return NextResponse.json({
     hasFamily: true,
     isParent,
@@ -94,6 +114,7 @@ export async function GET() {
     showEmergencyContact: data?.show_emergency_contact ?? false,
   });
 }
+
 
 export async function POST(request) {
   const { familyId, isParent } = await resolveFamilyContext();

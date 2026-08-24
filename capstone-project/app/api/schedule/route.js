@@ -17,28 +17,50 @@ export async function GET(request) {
     return NextResponse.json({ error: "Missing category_id" }, { status: 400 });
   }
 
-  const { familyId, isParent } = await resolveFamilyContext();
+  const { familyId, isParent, deviceId } = await resolveFamilyContext();
 
   if (!familyId) {
     return NextResponse.json({ data: null, isParent, hasFamily: false });
   }
 
   const svc = serviceClient();
-  const { data, error } = await svc
-    .from("schedules")
-    .select("data, updated_at")
-    .eq("family_id", familyId)
-    .eq("category_id", categoryId)
-    .is("device_id", null)
-    .maybeSingle();
+  let row = null;
 
-  if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  // A paired device checks for its own saved version first.
+  if (deviceId) {
+    const { data, error } = await svc
+      .from("schedules")
+      .select("data, updated_at")
+      .eq("family_id", familyId)
+      .eq("category_id", categoryId)
+      .eq("device_id", deviceId)
+      .maybeSingle();
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+    row = data;
+  }
+
+  // Fall back to the shared version — either this isn't a paired device
+  // (it's the parent/teacher's own account), or the device has no
+  // version of its own saved yet.
+  if (!row) {
+    const { data, error } = await svc
+      .from("schedules")
+      .select("data, updated_at")
+      .eq("family_id", familyId)
+      .eq("category_id", categoryId)
+      .is("device_id", null)
+      .maybeSingle();
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+    row = data;
   }
 
   return NextResponse.json({
-    data: data?.data ?? null,
-    updatedAt: data?.updated_at ?? null,
+    data: row?.data ?? null,
+    updatedAt: row?.updated_at ?? null,
     isParent,
     hasFamily: true,
   });
