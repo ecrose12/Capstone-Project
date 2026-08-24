@@ -27,7 +27,7 @@ export default function AccountPage() {
       setEmail(data.user?.email ?? null);
     });
 
-    fetch("/api/family/devices")
+    fetch("/api/family/saved-data")
       .then((res) => res.json())
       .then((result) => setDevices(result.devices || []))
       .finally(() => setLoadingDevices(false));
@@ -53,7 +53,7 @@ export default function AccountPage() {
       </section>
 
       <section className="account-page__section">
-        <h2>Paired Devices</h2>
+        <h2>Paired Devices &amp; Saved Data</h2>
         {loadingDevices ? (
           <p>Loading…</p>
         ) : devices.length === 0 ? (
@@ -61,11 +61,30 @@ export default function AccountPage() {
         ) : (
           <ul className="account-page__device-list">
             {devices.map((device) => (
-              <li key={device.id}>
-                <span>{device.device_name}</span>
-                <span className="account-page__device-meta">
-                  Last active {new Date(device.last_seen_at).toLocaleDateString()}
-                </span>
+              <li key={device.id} className="account-page__device">
+                <div className="account-page__device-header">
+                  <span className="account-page__device-name">{device.deviceName}</span>
+                  <span className="account-page__device-meta">
+                    Last active {new Date(device.lastSeenAt).toLocaleDateString()}
+                  </span>
+                </div>
+
+                {device.savedTemplates.length === 0 ? (
+                  <p className="account-page__no-saved">
+                    Nothing saved specifically for this device yet.
+                  </p>
+                ) : (
+                  <ul className="account-page__saved-list">
+                    {device.savedTemplates.map((template) => (
+                      <li key={template.categoryId} className="account-page__saved-item">
+                        <a href={`/category/${template.categoryId}`}>{template.categoryName}</a>
+                        <span className="account-page__saved-meta">
+                          Updated {new Date(template.updatedAt).toLocaleDateString()}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </li>
             ))}
           </ul>
