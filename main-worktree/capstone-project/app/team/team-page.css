@@ -1,0 +1,92 @@
+.team-page {
+  max-width: 700px;
+  margin: 2rem auto;
+  padding: 0 1.5rem 3rem;
+}
+
+.team-page h1 {
+  text-align: center;
+  font-size: clamp(1.75rem, 5vw, 2.25rem);
+  font-weight: 800;
+  color: var(--color-text);
+  margin: 0 0 0.5rem;
+}
+
+.team-page__intro {
+  text-align: center;
+  color: var(--color-text-secondary);
+  margin: 0 0 2rem;
+}
+
+.team-page__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.25rem;
+}
+
+.team-page__card {
+  padding: 1.5rem;
+  background: var(--color-bg);
+  border: 2px solid var(--color-border);
+  border-radius: 16px;
+  text-align: center;
+}
+
+.team-page__photo {
+  width: 140px;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid var(--color-border);
+  margin: 0 auto 1rem;
+  display: block;
+}
+
+.team-page__photo--placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg-subtle);
+  color: var(--color-text-muted);
+  font-size: 2.5rem;
+}
+
+.team-page__card h2 {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--color-text);
+  margin: 0 0 0.5rem;
+}
+
+.team-page__card p {
+  color: var(--color-text-secondary);
+  margin: 0 0 0.75rem;
+  text-align: left;
+  line-height: 1.55;
+}
+
+.team-page__toolkit-label {
+  font-weight: 700;
+  color: var(--color-text) !important;
+  margin-bottom: 0.4rem !important;
+}
+
+.team-page__toolkit-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 0.75rem;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.team-page__toolkit-list li {
+  color: var(--color-text-secondary);
+  font-size: 0.95rem;
+}
+
+.team-page__card a {
+  color: var(--color-accent-strong);
+  font-weight: 700;
+}

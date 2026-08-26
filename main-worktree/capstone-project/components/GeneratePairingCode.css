@@ -1,0 +1,97 @@
+.generate-pairing-code {
+  padding: 1.5rem;
+  background: var(--color-bg-subtle);
+  border: 2px solid var(--color-border-subtle);
+  border-radius: 14px;
+}
+
+.generate-pairing-code__title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--color-text);
+  margin: 0 0 0.5rem;
+}
+
+.generate-pairing-code__instructions {
+  color: var(--color-text-secondary);
+  margin: 0 0 1rem;
+}
+.generate-pairing-code__label {
+  display: block;
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: 0.4rem;
+}
+
+.generate-pairing-code__name-input {
+  display: block;
+  width: 100%;
+  min-height: 3rem;
+  padding: 0.6rem 0.75rem;
+  font-size: 1.05rem;
+  font-family: inherit;
+  color: var(--color-text);
+  background: var(--color-bg);
+  border: 2px solid var(--color-border-subtle);
+  border-radius: 10px;
+  margin-bottom: 1rem;
+}
+
+.generate-pairing-code__name-input:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 1px;
+  border-color: var(--color-focus);
+}
+
+.generate-pairing-code__button,
+.generate-pairing-code__regenerate {
+  min-height: 3.25rem;
+  padding: 0.6rem 1.5rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #ffffff;
+  background: var(--color-accent-strong);
+  border: 2px solid var(--color-accent-strong);
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.generate-pairing-code__button:hover,
+.generate-pairing-code__button:focus-visible,
+.generate-pairing-code__regenerate:hover,
+.generate-pairing-code__regenerate:focus-visible {
+  filter: brightness(1.1);
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.generate-pairing-code__button:disabled,
+.generate-pairing-code__regenerate:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.generate-pairing-code__result {
+  text-align: center;
+}
+
+.generate-pairing-code__code {
+  font-size: 2.5rem;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  color: var(--color-accent-strong);
+  margin: 0.5rem 0;
+}
+
+.generate-pairing-code__expiry {
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+  margin: 0 0 1rem;
+}
+
+.generate-pairing-code__error {
+  color: var(--color-error);
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-top: 0.75rem;
+}
