@@ -6,6 +6,14 @@ import { useTheme } from "@/context/ThemeContext";
 import { createClient } from "@/lib/supabase/client";
 import "./NavMenu.css";
 
+function BulbIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
+      <path d="M12 2a7 7 0 0 0-4 12.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26A7 7 0 0 0 12 2zm-2 17h4v1a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-1z" />
+    </svg>
+  );
+}
+
 export default function NavMenu() {
   const { mode, familyType, loading: modeLoading } = useParentMode();
   const { theme, toggleTheme, loading: themeLoading } = useTheme();
@@ -67,24 +75,90 @@ export default function NavMenu() {
 
   return (
     <nav className="nav-menu">
-      <button
-        ref={buttonRef}
-        type="button"
-        className="nav-menu__trigger"
-        aria-haspopup="true"
-        aria-expanded={open}
-        aria-controls="nav-menu-dropdown"
-        aria-label="Menu"
-        onClick={() => setOpen((prev) => !prev)}
-      >
-        <span aria-hidden="true">☰</span>
-      </button>
+      <div className="nav-menu__buttons">
+        <button
+          ref={buttonRef}
+          type="button"
+          className="nav-menu__trigger"
+          aria-haspopup="true"
+          aria-expanded={open}
+          aria-controls="nav-menu-dropdown"
+          aria-label="Menu"
+          onClick={() => setOpen((prev) => !prev)}
+        >
+          <span aria-hidden="true">☰</span>
+        </button>
+
+        <button
+          type="button"
+          className={`nav-menu__theme-toggle nav-menu__theme-toggle--${theme}`}
+          onClick={toggleTheme}
+          disabled={themeLoading}
+          aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+        >
+          <BulbIcon />
+        </button>
+      </div>
 
       {open && (
         <div id="nav-menu-dropdown" ref={menuRef} className="nav-menu__dropdown" role="menu">
           <div className="nav-menu__section" role="none">
             <Link href="/" role="menuitem" className="nav-menu__item" onClick={() => setOpen(false)}>
               Home
+            </Link>
+          </div>
+
+          <hr className="nav-menu__divider" />
+
+          <div className="nav-menu__section" role="none">
+            <button
+              type="button"
+              className="nav-menu__item nav-menu__account-toggle"
+              aria-expanded={aboutOpen}
+              aria-controls="nav-menu-about-submenu"
+              onClick={() => setAboutOpen((prev) => !prev)}
+            >
+              About
+              <span className="nav-menu__account-caret" aria-hidden="true">
+                {aboutOpen ? "▲" : "▼"}
+              </span>
+            </button>
+
+            {aboutOpen && (
+              <div id="nav-menu-about-submenu" className="nav-menu__submenu" role="none">
+                <Link
+                  href="/about"
+                  role="menuitem"
+                  className="nav-menu__item nav-menu__subitem"
+                  onClick={() => setOpen(false)}
+                >
+                  About My Words Matter
+                </Link>
+                <Link
+                  href="/team"
+                  role="menuitem"
+                  className="nav-menu__item nav-menu__subitem"
+                  onClick={() => setOpen(false)}
+                >
+                  Meet the Creators
+                </Link>
+                <Link
+                  href="/coming-soon"
+                  role="menuitem"
+                  className="nav-menu__item nav-menu__subitem"
+                  onClick={() => setOpen(false)}
+                >
+                  Coming Soon
+                </Link>
+              </div>
+            )}
+          </div>
+
+          <hr className="nav-menu__divider" />
+
+          <div className="nav-menu__section" role="none">
+            <Link href="/resources" role="menuitem" className="nav-menu__item" onClick={() => setOpen(false)}>
+              Resource Links
             </Link>
           </div>
 
@@ -159,75 +233,6 @@ export default function NavMenu() {
             <Link href="/settings" role="menuitem" className="nav-menu__item" onClick={() => setOpen(false)}>
               Settings
             </Link>
-          </div>
-
-          <hr className="nav-menu__divider" />
-
-          <div className="nav-menu__section" role="none">
-            <button
-              type="button"
-              role="menuitemcheckbox"
-              aria-checked={theme === "dark"}
-              className="nav-menu__item nav-menu__toggle"
-              onClick={toggleTheme}
-              disabled={themeLoading}
-            >
-              {theme === "dark" ? "Switch to Light Mode" : "Switch to Dark Mode"}
-            </button>
-          </div>
-
-          <hr className="nav-menu__divider" />
-
-          <div className="nav-menu__section" role="none">
-            <Link href="/resources" role="menuitem" className="nav-menu__item" onClick={() => setOpen(false)}>
-              Resource Links
-            </Link>
-          </div>
-
-          <hr className="nav-menu__divider" />
-
-          <div className="nav-menu__section" role="none">
-            <button
-              type="button"
-              className="nav-menu__item nav-menu__account-toggle"
-              aria-expanded={aboutOpen}
-              aria-controls="nav-menu-about-submenu"
-              onClick={() => setAboutOpen((prev) => !prev)}
-            >
-              About
-              <span className="nav-menu__account-caret" aria-hidden="true">
-                {aboutOpen ? "▲" : "▼"}
-              </span>
-            </button>
-
-            {aboutOpen && (
-              <div id="nav-menu-about-submenu" className="nav-menu__submenu" role="none">
-                <Link
-                  href="/about"
-                  role="menuitem"
-                  className="nav-menu__item nav-menu__subitem"
-                  onClick={() => setOpen(false)}
-                >
-                  About My Words Matter
-                </Link>
-                <Link
-                  href="/team"
-                  role="menuitem"
-                  className="nav-menu__item nav-menu__subitem"
-                  onClick={() => setOpen(false)}
-                >
-                  Meet the Creators
-                </Link>
-                <Link
-                  href="/coming-soon"
-                  role="menuitem"
-                  className="nav-menu__item nav-menu__subitem"
-                  onClick={() => setOpen(false)}
-                >
-                  Coming Soon
-                </Link>
-              </div>
-            )}
           </div>
 
           <hr className="nav-menu__divider" />

@@ -91,7 +91,7 @@ export default function EmergencyCardTemplate({ category }) {
     setPresetCards((prev) => prev.filter((c) => c.id !== id));
   }
 
-  async function saveAll() {
+    async function saveAll() {
     setStatus("saving");
     try {
       const res = await fetch("/api/emergency", {
@@ -105,6 +105,7 @@ export default function EmergencyCardTemplate({ category }) {
           showBasicInfo,
           showMedicalId,
           showEmergencyContact,
+          device_id: saveTarget,
         }),
       });
 
@@ -305,10 +306,13 @@ export default function EmergencyCardTemplate({ category }) {
             Edit
           </button>
         )}
-        {isParent && editing && (
-          <button type="button" onClick={saveAll} disabled={status === "saving"}>
-            {status === "saving" ? "Saving…" : status === "saved" ? "Saved ✓" : "Save"}
-          </button>
+                {isParent && editing && (
+          <>
+            <SaveTargetPicker value={saveTarget} onChange={setSaveTarget} />
+            <button type="button" onClick={saveAll} disabled={status === "saving"}>
+              {status === "saving" ? "Saving…" : status === "saved" ? "Saved ✓" : "Save"}
+            </button>
+          </>
         )}
         <button type="button" onClick={handlePrint} className="emergency-card__print">
           Print / Download

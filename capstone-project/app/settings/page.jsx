@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useParentMode } from "@/context/ParentModeContext";
+import { useTheme } from "@/context/ThemeContext";
 import { createClient } from "@/lib/supabase/client";
 import GeneratePairingCode from "@/components/GeneratePairingCode";
 import DevicePairing from "@/components/DevicePairing";
@@ -20,6 +21,7 @@ const SEARCH_MODE_KEY = "pecs-search-mode";
 
 export default function SettingsPage() {
   const { mode, loading: modeLoading, familyType, hasFamily } = useParentMode();
+  const { theme, toggleTheme, loading: themeLoading } = useTheme();
   const isParent = mode === "parent";
 
   const supabase = createClient();
@@ -93,6 +95,19 @@ export default function SettingsPage() {
   return (
     <main className="settings-page">
       <h1 className="settings-page__title">Settings</h1>
+
+      <section className="settings-page__section">
+        <h2>Appearance</h2>
+        <p>Choose how the app looks.</p>
+        <button
+          type="button"
+          onClick={toggleTheme}
+          disabled={themeLoading}
+          aria-pressed={theme === "dark"}
+        >
+          {theme === "dark" ? "Switch to Light Mode" : "Switch to Dark Mode"}
+        </button>
+      </section>
 
       <section className="settings-page__section">
         <h2>Text-to-Speech Language</h2>

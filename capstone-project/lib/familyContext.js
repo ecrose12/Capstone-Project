@@ -42,6 +42,7 @@ export async function resolveFamilyContext() {
         familyType,
         userId: user.id,
         role: data.role,
+        deviceId: null,
       };
     }
     return {
@@ -51,24 +52,25 @@ export async function resolveFamilyContext() {
       familyType: null,
       userId: user.id,
       role: null,
+      deviceId: null,
     };
   }
 
   const cookieStore = await cookies();
   const deviceToken = cookieStore.get("device_token")?.value;
   if (!deviceToken) {
-    return { familyId: null, isParent: false, alwaysSafeSearch: false, familyType: null };
+    return { familyId: null, isParent: false, alwaysSafeSearch: false, familyType: null, deviceId: null };
   }
 
   const svc = serviceClient();
   const { data: device } = await svc
     .from("devices")
-    .select("family_id")
+    .select("id, family_id")
     .eq("device_token_hash", hashToken(deviceToken))
     .maybeSingle();
 
   if (!device) {
-    return { familyId: null, isParent: false, alwaysSafeSearch: false, familyType: null };
+    return { familyId: null, isParent: false, alwaysSafeSearch: false, familyType: null, deviceId: null };
   }
 
   svc.from("devices").update({ last_seen_at: new Date().toISOString() })
@@ -80,5 +82,6 @@ export async function resolveFamilyContext() {
     isParent: false,
     alwaysSafeSearch: familyType === "school",
     familyType,
+    deviceId: device.id,
   };
 }

@@ -14,7 +14,7 @@ function serviceClient() {
 
 const CODE_LIFETIME_MS = 10 * 60 * 1000; // 10 minutes
 
-export async function POST() {
+export async function POST(request) {
   const supabase = await createClient();
   const {
     data: { user },
@@ -23,6 +23,14 @@ export async function POST() {
   if (!user) {
     return NextResponse.json({ error: "Not signed in" }, { status: 401 });
   }
+
+  let body = {};
+  try {
+    body = await request.json();
+  } catch {
+    // Body is optional — an empty/missing body just means no device name given
+  }
+  const deviceName = typeof body?.deviceName === "string" ? body.deviceName.trim() : "";
 
   const svc = serviceClient();
   const { data: membership, error: membershipError } = await svc
@@ -56,6 +64,7 @@ export async function POST() {
       family_id: membership.family_id,
       created_by: user.id,
       expires_at: expiresAt,
+      device_name: deviceName || null,
     });
     if (!error) {
       return NextResponse.json({ code, expiresAt });

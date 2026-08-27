@@ -3,6 +3,12 @@
   flex-shrink: 0;
 }
 
+.nav-menu__buttons {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 .nav-menu__trigger {
   display: flex;
   align-items: center;
@@ -23,6 +29,42 @@
   background: var(--color-bg-subtle);
   outline: 3px solid var(--color-focus);
   outline-offset: 2px;
+}
+
+/* Light bulb theme toggle — black bulb in light mode, white bulb in dark
+   mode, so it always reads clearly against the button's own background
+   (which itself flips with the theme). */
+.nav-menu__theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  background: var(--color-bg);
+  border: 3px solid var(--color-border);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+}
+
+.nav-menu__theme-toggle:hover,
+.nav-menu__theme-toggle:focus-visible {
+  background: var(--color-bg-subtle);
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.nav-menu__theme-toggle:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.nav-menu__theme-toggle--light {
+  color: #000000;
+}
+
+.nav-menu__theme-toggle--dark {
+  color: #ffffff;
 }
 
 .nav-menu__dropdown {
@@ -103,7 +145,8 @@
 }
 
 @media (max-width: 480px) {
-  .nav-menu__trigger {
+  .nav-menu__trigger,
+  .nav-menu__theme-toggle {
     width: 3rem;
     height: 3rem;
     font-size: 1.3rem;

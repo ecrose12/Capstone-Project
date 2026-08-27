@@ -17,28 +17,50 @@ export async function GET(request) {
     return NextResponse.json({ error: "Missing category_id" }, { status: 400 });
   }
 
-  const { familyId, isParent } = await resolveFamilyContext();
+  const { familyId, isParent, deviceId } = await resolveFamilyContext();
 
-  // No family resolved (guest, or parent with no family yet) — nothing saved to return.
   if (!familyId) {
     return NextResponse.json({ data: null, isParent, hasFamily: false });
   }
 
   const svc = serviceClient();
-  const { data, error } = await svc
-    .from("schedules")
-    .select("data, updated_at")
-    .eq("family_id", familyId)
-    .eq("category_id", categoryId)
-    .maybeSingle();
+  let row = null;
 
-  if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  // A paired device checks for its own saved version first.
+  if (deviceId) {
+    const { data, error } = await svc
+      .from("schedules")
+      .select("data, updated_at")
+      .eq("family_id", familyId)
+      .eq("category_id", categoryId)
+      .eq("device_id", deviceId)
+      .maybeSingle();
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+    row = data;
+  }
+
+  // Fall back to the shared version — either this isn't a paired device
+  // (it's the parent/teacher's own account), or the device has no
+  // version of its own saved yet.
+  if (!row) {
+    const { data, error } = await svc
+      .from("schedules")
+      .select("data, updated_at")
+      .eq("family_id", familyId)
+      .eq("category_id", categoryId)
+      .is("device_id", null)
+      .maybeSingle();
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+    row = data;
   }
 
   return NextResponse.json({
-    data: data?.data ?? null,
-    updatedAt: data?.updated_at ?? null,
+    data: row?.data ?? null,
+    updatedAt: row?.updated_at ?? null,
     isParent,
     hasFamily: true,
   });
@@ -48,7 +70,6 @@ export async function POST(request) {
   const { familyId, isParent } = await resolveFamilyContext();
 
   if (!isParent) {
-    // Only an authenticated parent may write — device-paired children get read-only access.
     return NextResponse.json({ error: "Only a signed-in parent can save a schedule" }, { status: 403 });
   }
 
@@ -66,23 +87,50 @@ export async function POST(request) {
     return NextResponse.json({ error: "Invalid request body" }, { status: 400 });
   }
 
-  const { category_id: categoryId, data } = body || {};
+  const { category_id: categoryId, data, device_id: deviceId } = body || {};
   if (!categoryId || typeof data !== "object" || data === null) {
     return NextResponse.json({ error: "Missing category_id or data" }, { status: 400 });
   }
 
   const svc = serviceClient();
-  const { error } = await svc
+
+  if (deviceId) {
+    const { data: device } = await svc
+      .from("devices")
+      .select("id")
+      .eq("id", deviceId)
+      .eq("family_id", familyId)
+      .maybeSingle();
+    if (!device) {
+      return NextResponse.json({ error: "That device wasn't found for this account." }, { status: 400 });
+    }
+  }
+
+  let existingQuery = svc
     .from("schedules")
-    .upsert(
-      {
-        family_id: familyId,
-        category_id: categoryId,
-        data,
-        updated_at: new Date().toISOString(),
-      },
-      { onConflict: "family_id,category_id" }
-    );
+    .select("id")
+    .eq("family_id", familyId)
+    .eq("category_id", categoryId);
+  existingQuery = deviceId
+    ? existingQuery.eq("device_id", deviceId)
+    : existingQuery.is("device_id", null);
+
+  const { data: existing, error: findError } = await existingQuery.maybeSingle();
+  if (findError) {
+    return NextResponse.json({ error: findError.message }, { status: 500 });
+  }
+
+  const payload = {
+    family_id: familyId,
+    category_id: categoryId,
+    device_id: deviceId || null,
+    data,
+    updated_at: new Date().toISOString(),
+  };
+
+  const { error } = existing
+    ? await svc.from("schedules").update(payload).eq("id", existing.id)
+    : await svc.from("schedules").insert(payload);
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });

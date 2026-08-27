@@ -16,6 +16,32 @@
   color: var(--color-text-secondary);
   margin: 0 0 1rem;
 }
+.generate-pairing-code__label {
+  display: block;
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: 0.4rem;
+}
+
+.generate-pairing-code__name-input {
+  display: block;
+  width: 100%;
+  min-height: 3rem;
+  padding: 0.6rem 0.75rem;
+  font-size: 1.05rem;
+  font-family: inherit;
+  color: var(--color-text);
+  background: var(--color-bg);
+  border: 2px solid var(--color-border-subtle);
+  border-radius: 10px;
+  margin-bottom: 1rem;
+}
+
+.generate-pairing-code__name-input:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 1px;
+  border-color: var(--color-focus);
+}
 
 .generate-pairing-code__button,
 .generate-pairing-code__regenerate {
