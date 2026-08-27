@@ -1,14 +1,7 @@
 .account-badge {
-
-
   flex-shrink: 0;
-  position: fixed;
-  top: 0.75rem;
-  right: 0.75rem;
-  z-index: 950;
   display: flex;
   align-items: center;
-
 }
 
 .account-badge--active {
@@ -81,11 +74,6 @@
 }
 
 @media (max-width: 480px) {
-
-  .account-badge {
-    top: 0.5rem;
-    right: 0.5rem;
-  }
 
   .account-badge--active {
     min-height: 2.5rem;
