@@ -9,14 +9,31 @@
   align-items: center;
   justify-content: center;
   gap: 0.75rem;
-  padding: 1.25rem 3.5rem 1rem;
+  padding: 0.75rem 0.75rem 1rem;
   background: var(--color-bg);
   border-bottom: 3px solid var(--color-border);
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
 }
 
+/* The identity row: nav trigger(s) on the left, the title in the middle,
+   the account badge on the right — all as real flex children (not
+   independently-fixed siblings), so nothing can ever overlap the title.
+   The title shrinks/truncates first if the corners need more room. */
+.site-header__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  width: 100%;
+}
+
 .site-header__title {
-  font-size: clamp(1.6rem, 4vw, 3.5rem);
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: clamp(1.3rem, 4.5vw, 3.5rem);
   font-weight: 1000;
   letter-spacing: 0.01em;
   color: var(--color-text);
@@ -34,13 +51,13 @@
 
 @media (max-width: 640px) {
   .site-header {
-    padding: 1rem 3rem 0.75rem;
+    padding: 0.65rem 0.6rem 0.85rem;
   }
 }
 
 @media (max-width: 480px) {
   .site-header {
-    padding: 0.85rem 2.5rem 0.65rem;
+    padding: 0.5rem 0.5rem 0.65rem;
   }
 }
 

@@ -3,6 +3,7 @@ import { Lexend } from "next/font/google";
 import "./globals.css";
 import { ParentModeProvider } from "@/context/ParentModeContext";
 import { ThemeProvider } from "@/context/ThemeContext";
+
 import NavMenu from "@/components/NavMenu";
 import AccountBadge from "@/components/AccountBadge";
 import SiteHeader from "@/components/SiteHeader";
@@ -43,8 +44,11 @@ export default function RootLayout({
         <ThemeProvider>
           <ParentModeProvider>
             <SiteHeader />
+
+
             <NavMenu />
             <AccountBadge />
+
             <main className="flex-1 w-full page-content">
               {children}
             </main>
