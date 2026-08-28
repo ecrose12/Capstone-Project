@@ -8,11 +8,11 @@ import "./SiteHeader.css";
 export default function SiteHeader() {
   return (
     <header className="site-header">
-      <div className="site-header__row">
+      <Link href="/" className="site-header__title">
+        My Words Matter
+      </Link>
+      <div className="site-header__buttons">
         <NavMenu />
-        <Link href="/" className="site-header__title">
-          My Words Matter
-        </Link>
         <AccountBadge />
       </div>
       <IntroductionMessageButton />
