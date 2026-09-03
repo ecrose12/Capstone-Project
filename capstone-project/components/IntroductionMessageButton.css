@@ -18,8 +18,8 @@
   font-size: 1.15rem;
   font-weight: 700;
   line-height: 1.2;
-  color: #ffffff;
-  background: var(--color-accent-strong);
+  color: var(--color-button-primary-text);
+  background: var(--color-button-primary-bg);
   border: 3px solid var(--color-border);
   border-radius: 999px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
@@ -169,9 +169,9 @@
 }
 
 .intro-message__dialog-actions button:last-child {
-  background: var(--color-accent-strong);
-  color: #ffffff;
-  border: 2px solid var(--color-accent-strong);
+  background: var(--color-button-primary-bg);
+  color: var(--color-button-primary-text);
+  border: 2px solid var(--color-button-primary-bg);
 }
 
 .intro-message__dialog-actions button:hover,

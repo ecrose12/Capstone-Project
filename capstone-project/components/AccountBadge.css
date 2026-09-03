@@ -58,9 +58,9 @@
 }
 
 .account-badge__guest-link--primary {
-  color: #ffffff;
-  background: var(--color-accent-strong);
-  border-color: var(--color-accent-strong);
+  color: var(--color-button-primary-text);
+  background: var(--color-button-primary-bg);
+  border-color: var(--color-button-primary-bg);
 }
 
 .account-badge__guest-link--primary:hover,

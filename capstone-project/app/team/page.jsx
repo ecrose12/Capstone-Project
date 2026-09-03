@@ -79,7 +79,7 @@ export default function TeamPage() {
             Laura is a Full Stack Developer and co-creator of My Words
             Matter, built during the OKCoders 2026 Full Stack,
             AI-Enhanced Software Development bootcamp through Techlahoma. 
-            With an M.S. in Industrial/Organizational Psychology, Laura
+            With her graduate training, Laura
             brings something many designers and developers don't — a
             research-backed understanding of human behavior. She likes
             seeing why people make the decisions they do, what frustrates
@@ -88,36 +88,22 @@ export default function TeamPage() {
           </p>
 
           <p>
-            For over a decade at her state agency, she's worked at the
-            intersection of two roles: designer and program manager. She's
-            translated complex scientific and technical information into
-            clear, accessible communications — designing annual reports,
-            infographics, research catalogs, and conference materials for
-            audiences ranging from legislators to the general public. On
-            the program management side, she's onboarded newly awarded
-            PIs and monitored the submission and review of quarterly
-            progress reports, budget and contract modifications, and
-            invoices for over 100 projects annually.
+            Laura has over over 10 years of experience translating complex information into clear, accessible communications. She combines UX research and design skills with formal training in graphic design and full-stack development. Her M.S. in Industrial/Organizational Psychology provides a strong foundation in human factors and user behavior. 
           </p>
 
-          <p className="team-page__toolkit-label">Her toolkit spans the full design process:</p>
+          <p className="team-page__toolkit-label">She is comfortable working through the full design process:</p>
           <ul className="team-page__toolkit-list">
             <li>→ UX research &amp; usability testing</li>
             <li>→ Information architecture &amp; content design</li>
-            <li>→ Visual design: Figma, Adobe InDesign, Illustrator, Photoshop, Canva</li>
-            <li>→ Front-end basics: HTML, CSS, JavaScript (currently expanding via full-stack bootcamp)</li>
+            <li>→ Visual design: Adobe XD, InDesign, Illustrator, Photoshop, Figma, Canva, Microsoft Power Apps</li>
+            <li>→ Front-end basics: HTML, CSS, JavaScript </li>
             <li>→ Scientific &amp; data visualization</li>
           </ul>
 
           <p>
-            <strong>Certifications:</strong> UX Design (Google/Coursera,
+            <strong>Certifications:</strong> OK Coders Full-stack Bootcamp (Techlahoma, 2026) · UX Design (Google/Coursera,
             2025) · Graphic Design (RISD, 2025) · Scientific Illustration
             (2020)
-          </p>
-
-          <p>
-            Laura is currently open to new roles in design and
-            development, as well as program management.
           </p>
 
            <p>

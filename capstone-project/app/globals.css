@@ -66,6 +66,13 @@ body {
   /* Interactive */
   --color-focus: #1a5fb4;             /* focus ring — ~5.2:1 against white, meets 3:1 non-text minimum */
   --color-accent-strong: #0b5fb0;     /* links/accent text needing AA on white — ~5.6:1 */
+
+  /* NEW: solid-fill buttons — kept separate from --color-accent-strong.
+     That token is a TEXT color (flips light/dark per theme). A solid
+     button fill and its label need the opposite relationship, so they
+     get their own verified pair. */
+  --color-button-primary-bg: #0b5fb0;    /* NEW */
+  --color-button-primary-text: #ffffff;  /* NEW — ~6.4:1 on --color-button-primary-bg */
 }
 
 @media (prefers-color-scheme: dark) {
@@ -85,6 +92,9 @@ body {
 
     --color-focus: #7ab8ff;             /* ~8.7:1 on --color-bg */
     --color-accent-strong: #7ab8ff;
+
+    --color-button-primary-bg: #7ab8ff;    /* NEW */
+    --color-button-primary-text: #0a2540;  /* NEW — ~7.5:1 on --color-button-primary-bg, dark navy not white */
   }
 }
 
@@ -104,4 +114,7 @@ body {
 
   --color-focus: #7ab8ff;
   --color-accent-strong: #7ab8ff;
+
+  --color-button-primary-bg: #7ab8ff;    /* NEW */
+  --color-button-primary-text: #0a2540;  /* NEW */
 }
