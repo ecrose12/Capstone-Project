@@ -83,10 +83,14 @@ export default function SiteTour() {
         return { element: step.element, popover };
       });
 
-      d = driver({
+            d = driver({
         showProgress: true,
         allowClose: true,
         onCloseClick: () => {
+          d.destroy();
+          finishTour();
+        },
+        onDoneClick: () => {
           d.destroy();
           finishTour();
         },
