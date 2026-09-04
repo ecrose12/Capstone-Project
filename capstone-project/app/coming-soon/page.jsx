@@ -27,10 +27,6 @@ export default function ComingSoonPage() {
           you've used most recently
         </li>
         <li>
-          <strong>App/Website Tour</strong> — a guided walkthrough to help
-          new users get oriented
-        </li>
-        <li>
           <strong>Saved Lists</strong> — manage all your saved lists in one
           place (likely from your Account page)
         </li>
