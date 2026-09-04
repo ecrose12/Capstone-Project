@@ -52,8 +52,8 @@ export default function SupportPage() {
       <h1>Contact My Words Matter Support</h1>
       <p>Having trouble, or have a question? Send us a message below.</p>
 
-      <form onSubmit={handleSubmit} className="support-page__form">
-        <label htmlFor="support-name">Name</label>
+            <form id="tour-support-form" onSubmit={handleSubmit} className="support-page__form">
+               <label htmlFor="support-name">Name</label>
         <input id="support-name" type="text" value={name} onChange={(e) => setName(e.target.value)} required />
 
         <label htmlFor="support-email">Email</label>

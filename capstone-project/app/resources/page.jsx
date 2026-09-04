@@ -3,7 +3,7 @@ import "./resources-page.css";
 
 export default function ResourcesPage() {
   return (
-    <main className="resources-page">
+        <main id="tour-resources-list" className="resources-page">
       <h1 className="resources-page__title">Resource Links</h1>
       <p className="resources-page__intro">
         Helpful external resources for social stories, PECS, and visual

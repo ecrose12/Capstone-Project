@@ -1,7 +1,9 @@
 // Each step names the page it belongs to (`path`) and a CSS selector
 // (`element`) for the real DOM element to highlight. The tour engine
 // walks these in order, automatically navigating to a new page whenever
-// consecutive steps' paths differ.
+// consecutive steps' paths differ. Steps flagged `menuAction: "about"`
+// live inside the nav dropdown's About submenu — the tour engine opens
+// that menu automatically right before showing them.
 
 export const QUICK_TOUR_STEPS = [
   {
@@ -53,6 +55,33 @@ export const QUICK_TOUR_STEPS = [
 export const FULL_TOUR_STEPS = [
   ...QUICK_TOUR_STEPS,
   {
+    path: "/",
+    element: "#tour-about-page",
+    menuAction: "about",
+    popover: {
+      title: "About My Words Matter",
+      description: "Learn about our mission and why this app was built.",
+    },
+  },
+  {
+    path: "/",
+    element: "#tour-about-team",
+    menuAction: "about",
+    popover: {
+      title: "Meet the Creators",
+      description: "See who built this app and a bit about their backgrounds.",
+    },
+  },
+  {
+    path: "/",
+    element: "#tour-about-coming-soon",
+    menuAction: "about",
+    popover: {
+      title: "Coming Soon",
+      description: "A look at features we're planning to build next.",
+    },
+  },
+  {
     path: "/settings",
     element: "#tour-settings-appearance",
     popover: {
@@ -84,6 +113,23 @@ export const FULL_TOUR_STEPS = [
       title: "Device Pairing",
       description:
         "Parents and teachers can generate a code here to link a child's or student's device — no email or login needed for them.",
+    },
+  },
+  {
+    path: "/resources",
+    element: "#tour-resources-list",
+    popover: {
+      title: "Resource Links",
+      description:
+        "Helpful external resources for social stories, PECS, and visual supports.",
+    },
+  },
+  {
+    path: "/support",
+    element: "#tour-support-form",
+    popover: {
+      title: "Contact Support",
+      description: "Have a question or run into a problem? Send us a message right here.",
     },
   },
   {

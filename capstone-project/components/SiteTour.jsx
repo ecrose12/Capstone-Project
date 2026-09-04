@@ -8,7 +8,7 @@ import "./SiteTour.css";
 import { useParentMode } from "@/context/ParentModeContext";
 
 const SEEN_KEY = "mwm-tour-seen";
-const PROGRESS_KEY = "mwm-tour-progress"; // sessionStorage: { type, index }
+const PROGRESS_KEY = "mwm-tour-progress";
 
 export default function SiteTour() {
   const pathname = usePathname();
@@ -56,19 +56,33 @@ export default function SiteTour() {
       let d;
       const driverSteps = pageSteps.map((step, idx) => {
         const isLastOnPage = idx === pageSteps.length - 1;
+        const nextStep = pageSteps[idx + 1];
         const popover = {
           title: step.popover.title,
           description: step.popover.description,
         };
 
-        // Driver.js always treats the last step of THIS array as "done"
-        // and calls onDoneClick for it (never onNextClick) — so that's
-        // the hook we use here, regardless of whether this is truly the
-        // end of the whole tour or just this page's portion of it.
+        if (nextStep?.menuAction === "about" && step.menuAction !== "about") {
+          popover.onNextClick = () => {
+            document.querySelector("#tour-nav-trigger")?.click();
+            setTimeout(() => {
+              document.querySelector("#tour-nav-about-toggle")?.click();
+              setTimeout(() => d.moveNext(), 200);
+            }, 200);
+          };
+        }
+
         if (isLastOnPage) {
+          const closeMenuIfNeeded = () => {
+            if (step.menuAction === "about") {
+              document.querySelector("#tour-nav-trigger")?.click();
+            }
+          };
+
           if (nextPagePath) {
             popover.doneBtnText = "Next →";
             popover.onDoneClick = () => {
+              closeMenuIfNeeded();
               sessionStorage.setItem(PROGRESS_KEY, JSON.stringify({ type, index: i }));
               d.destroy();
               router.push(nextPagePath);
@@ -76,6 +90,7 @@ export default function SiteTour() {
           } else {
             popover.doneBtnText = "Finish!";
             popover.onDoneClick = () => {
+              closeMenuIfNeeded();
               d.destroy();
               finishTour();
             };
