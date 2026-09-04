@@ -68,9 +68,10 @@ export default function SiteTour() {
           description: step.popover.description,
         };
 
-        if (isLastOnPage && nextPagePath) {
+               if (isLastOnPage && nextPagePath) {
           popover.nextBtnText = "Next →";
           popover.onNextClick = () => {
+            isNavigatingRef.current = true;
             sessionStorage.setItem(PROGRESS_KEY, JSON.stringify({ type, index: i }));
             d.destroy();
             router.push(nextPagePath);
@@ -90,7 +91,15 @@ export default function SiteTour() {
           d.destroy();
           finishTour();
         },
-        onDoneClick: () => {
+                onDoneClick: () => {
+          // Driver.js treats the last step of *this specific* step list as
+          // "done," even when we've customized it to navigate onward to
+          // another page instead. If that navigation just happened, skip
+          // re-finishing the tour here — it's already been handled.
+          if (isNavigatingRef.current) {
+            isNavigatingRef.current = false;
+            return;
+          }
           d.destroy();
           finishTour();
         },
@@ -99,13 +108,13 @@ export default function SiteTour() {
         },
         steps: driverSteps,
       });
-
+      const isNavigatingRef = useRef(false);
       driverRef.current = d;
       d.drive();
     },
     [pathname, router, getSteps]
   );
-
+   
   // Resume an in-progress tour after navigating to a new page.
   useEffect(() => {
     const raw = sessionStorage.getItem(PROGRESS_KEY);
