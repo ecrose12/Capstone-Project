@@ -87,12 +87,15 @@ export default function SiteTour() {
               d.destroy();
               router.push(nextPagePath);
             };
-          } else {
+                    } else {
             popover.doneBtnText = "Finish!";
             popover.onDoneClick = () => {
               closeMenuIfNeeded();
               d.destroy();
               finishTour();
+              if (pathname !== "/") {
+                router.push("/");
+              }
             };
           }
         }
