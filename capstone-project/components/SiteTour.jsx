@@ -17,14 +17,10 @@ export default function SiteTour() {
   const isAuthed = mode === "parent";
   const [showChoice, setShowChoice] = useState(false);
   const driverRef = useRef(null);
-  const isNavigatingRef = useRef(false);
 
   const getSteps = useCallback(
     (type) => {
       const steps = type === "full" ? FULL_TOUR_STEPS : QUICK_TOUR_STEPS;
-      // Skip any step that needs a signed-in parent (like Account page
-      // content) if the person taking the tour isn't actually logged in —
-      // those pages redirect away otherwise, breaking the tour.
       return steps.filter((step) => !step.requiresAuth || isAuthed);
     },
     [isAuthed]
@@ -39,7 +35,6 @@ export default function SiteTour() {
     (type, startIndex = 0) => {
       const steps = getSteps(type);
 
-      // Collect this page's consecutive steps starting at startIndex.
       const pageSteps = [];
       let i = startIndex;
       while (i < steps.length && steps[i].path === pathname) {
@@ -47,11 +42,8 @@ export default function SiteTour() {
         i++;
       }
       const nextPagePath = i < steps.length ? steps[i].path : null;
-      const isLastOverall = i >= steps.length;
 
       if (pageSteps.length === 0) {
-        // Nothing for this tour on the current page — skip straight to
-        // wherever the next step actually is, or finish if there isn't one.
         if (nextPagePath) {
           sessionStorage.setItem(PROGRESS_KEY, JSON.stringify({ type, index: i }));
           router.push(nextPagePath);
@@ -69,17 +61,25 @@ export default function SiteTour() {
           description: step.popover.description,
         };
 
-        if (isLastOnPage && nextPagePath) {
-          popover.nextBtnText = "Next →";
-          popover.onNextClick = () => {
-            isNavigatingRef.current = true;
-            sessionStorage.setItem(PROGRESS_KEY, JSON.stringify({ type, index: i }));
-            d.destroy();
-            router.push(nextPagePath);
-          };
-        }
-        if (isLastOnPage && isLastOverall) {
-          popover.doneBtnText = "Finish!";
+        // Driver.js always treats the last step of THIS array as "done"
+        // and calls onDoneClick for it (never onNextClick) — so that's
+        // the hook we use here, regardless of whether this is truly the
+        // end of the whole tour or just this page's portion of it.
+        if (isLastOnPage) {
+          if (nextPagePath) {
+            popover.doneBtnText = "Next →";
+            popover.onDoneClick = () => {
+              sessionStorage.setItem(PROGRESS_KEY, JSON.stringify({ type, index: i }));
+              d.destroy();
+              router.push(nextPagePath);
+            };
+          } else {
+            popover.doneBtnText = "Finish!";
+            popover.onDoneClick = () => {
+              d.destroy();
+              finishTour();
+            };
+          }
         }
 
         return { element: step.element, popover };
@@ -89,18 +89,6 @@ export default function SiteTour() {
         showProgress: true,
         allowClose: true,
         onCloseClick: () => {
-          d.destroy();
-          finishTour();
-        },
-        onDoneClick: () => {
-          // Driver.js treats the last step of *this specific* step list as
-          // "done," even when we've customized it to navigate onward to
-          // another page instead. If that navigation just happened, skip
-          // re-finishing the tour here — it's already been handled.
-          if (isNavigatingRef.current) {
-            isNavigatingRef.current = false;
-            return;
-          }
           d.destroy();
           finishTour();
         },
@@ -116,7 +104,6 @@ export default function SiteTour() {
     [pathname, router, getSteps]
   );
 
-  // Resume an in-progress tour after navigating to a new page.
   useEffect(() => {
     const raw = sessionStorage.getItem(PROGRESS_KEY);
     if (!raw) return;
@@ -130,7 +117,6 @@ export default function SiteTour() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
 
-  // Auto-prompt once, on the home page, if never seen before.
   useEffect(() => {
     if (pathname !== "/") return;
     if (localStorage.getItem(SEEN_KEY)) return;
@@ -139,8 +125,6 @@ export default function SiteTour() {
     return () => clearTimeout(timer);
   }, [pathname]);
 
-  // Lets other components (the nav menu's "Take a Tour" link) reopen
-  // the choice prompt on demand.
   useEffect(() => {
     function handleOpenRequest() {
       setShowChoice(true);
