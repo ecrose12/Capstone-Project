@@ -17,6 +17,7 @@ export default function SiteTour() {
   const isAuthed = mode === "parent";
   const [showChoice, setShowChoice] = useState(false);
   const driverRef = useRef(null);
+  const isNavigatingRef = useRef(false);
 
   const getSteps = useCallback(
     (type) => {
@@ -68,7 +69,7 @@ export default function SiteTour() {
           description: step.popover.description,
         };
 
-               if (isLastOnPage && nextPagePath) {
+        if (isLastOnPage && nextPagePath) {
           popover.nextBtnText = "Next →";
           popover.onNextClick = () => {
             isNavigatingRef.current = true;
@@ -84,14 +85,14 @@ export default function SiteTour() {
         return { element: step.element, popover };
       });
 
-            d = driver({
+      d = driver({
         showProgress: true,
         allowClose: true,
         onCloseClick: () => {
           d.destroy();
           finishTour();
         },
-                onDoneClick: () => {
+        onDoneClick: () => {
           // Driver.js treats the last step of *this specific* step list as
           // "done," even when we've customized it to navigate onward to
           // another page instead. If that navigation just happened, skip
@@ -108,13 +109,13 @@ export default function SiteTour() {
         },
         steps: driverSteps,
       });
-      const isNavigatingRef = useRef(false);
+
       driverRef.current = d;
       d.drive();
     },
     [pathname, router, getSteps]
   );
-   
+
   // Resume an in-progress tour after navigating to a new page.
   useEffect(() => {
     const raw = sessionStorage.getItem(PROGRESS_KEY);
