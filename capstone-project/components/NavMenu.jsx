@@ -76,7 +76,8 @@ export default function NavMenu() {
   return (
     <nav className="nav-menu">
       <div className="nav-menu__buttons">
-        <button
+                <button
+          id="tour-nav-trigger"
           ref={buttonRef}
           type="button"
           className="nav-menu__trigger"
@@ -89,7 +90,8 @@ export default function NavMenu() {
           <span aria-hidden="true">☰</span>
         </button>
 
-        <button
+                <button
+          id="tour-theme-toggle"
           type="button"
           className={`nav-menu__theme-toggle nav-menu__theme-toggle--${theme}`}
           onClick={toggleTheme}
@@ -102,7 +104,7 @@ export default function NavMenu() {
 
       {open && (
         <div id="nav-menu-dropdown" ref={menuRef} className="nav-menu__dropdown" role="menu">
-          <div className="nav-menu__section" role="none">
+                   <div className="nav-menu__section" role="none">
             <Link href="/" role="menuitem" className="nav-menu__item" onClick={() => setOpen(false)}>
               Home
             </Link>
@@ -112,6 +114,23 @@ export default function NavMenu() {
 
           <div className="nav-menu__section" role="none">
             <button
+              type="button"
+              role="menuitem"
+              className="nav-menu__item"
+              onClick={() => {
+                setOpen(false);
+                window.dispatchEvent(new Event("mwm-open-tour"));
+              }}
+            >
+              Take a Tour
+            </button>
+          </div>
+
+          <hr className="nav-menu__divider" />
+
+          <div className="nav-menu__section" role="none">
+                        <button
+              id="tour-nav-about-toggle"
               type="button"
               className="nav-menu__item nav-menu__account-toggle"
               aria-expanded={aboutOpen}
@@ -126,7 +145,8 @@ export default function NavMenu() {
 
             {aboutOpen && (
               <div id="nav-menu-about-submenu" className="nav-menu__submenu" role="none">
-                <Link
+                                <Link
+                  id="tour-about-page"
                   href="/about"
                   role="menuitem"
                   className="nav-menu__item nav-menu__subitem"
@@ -135,6 +155,7 @@ export default function NavMenu() {
                   About My Words Matter
                 </Link>
                 <Link
+                  id="tour-about-team"
                   href="/team"
                   role="menuitem"
                   className="nav-menu__item nav-menu__subitem"
@@ -143,6 +164,7 @@ export default function NavMenu() {
                   Meet the Creators
                 </Link>
                 <Link
+                  id="tour-about-coming-soon"
                   href="/coming-soon"
                   role="menuitem"
                   className="nav-menu__item nav-menu__subitem"

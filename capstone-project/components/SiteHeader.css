@@ -15,25 +15,8 @@
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
 }
 
-/* The identity row: nav trigger(s) on the left, the title in the middle,
-   the account badge on the right — all as real flex children (not
-   independently-fixed siblings), so nothing can ever overlap the title.
-   The title shrinks/truncates first if the corners need more room. */
-.site-header__row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem;
-  width: 100%;
-}
-
 .site-header__title {
-  flex: 1 1 auto;
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  font-size: clamp(1.3rem, 4.5vw, 3.5rem);
+  font-size: clamp(1.3rem, 5vw, 3.5rem);
   font-weight: 1000;
   letter-spacing: 0.01em;
   color: var(--color-text);
@@ -47,6 +30,13 @@
   outline: 3px solid var(--color-focus);
   outline-offset: 4px;
   border-radius: 6px;
+}
+
+.site-header__buttons {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
 }
 
 @media (max-width: 640px) {
@@ -69,10 +59,6 @@
   }
 }
 
-/* Reserves space at the top of every page's content so it isn't hidden
-   underneath the now-fixed header. These values are estimates based on
-   the header's typical rendered height — nudge if content still looks
-   slightly cut off or has too much gap once viewed live. */
 .page-content {
   padding-top: 11rem;
 }
