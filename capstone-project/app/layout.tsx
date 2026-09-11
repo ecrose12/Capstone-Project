@@ -3,11 +3,11 @@ import { Lexend } from "next/font/google";
 import "./globals.css";
 import { ParentModeProvider } from "@/context/ParentModeContext";
 import { ThemeProvider } from "@/context/ThemeContext";
-
 import NavMenu from "@/components/NavMenu";
 import AccountBadge from "@/components/AccountBadge";
 import SiteHeader from "@/components/SiteHeader";
 import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
+import SiteTour from "@/components/SiteTour";
 
 const lexend = Lexend({
   variable: "--font-lexend",
@@ -44,10 +44,9 @@ export default function RootLayout({
         <ThemeProvider>
           <ParentModeProvider>
             <SiteHeader />
-
-
             <NavMenu />
             <AccountBadge />
+            <SiteTour />
 
             <main className="flex-1 w-full page-content">
               {children}

@@ -44,7 +44,7 @@ export default function AccountPage() {
     <main className="account-page">
       <h1 className="account-page__title">My Account</h1>
 
-      <section className="account-page__section">
+            <section id="tour-account-signed-in" className="account-page__section">
         <h2>Signed in as</h2>
         <p>{email || "…"}</p>
         <button type="button" onClick={handleSignOut}>
@@ -52,7 +52,7 @@ export default function AccountPage() {
         </button>
       </section>
 
-      <section className="account-page__section">
+            <section id="tour-account-devices" className="account-page__section">
         <h2>Paired Devices &amp; Saved Data</h2>
         {loadingDevices ? (
           <p>Loading…</p>

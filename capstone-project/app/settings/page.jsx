@@ -96,7 +96,7 @@ export default function SettingsPage() {
     <main className="settings-page">
       <h1 className="settings-page__title">Settings</h1>
 
-      <section className="settings-page__section">
+            <section id="tour-settings-appearance" className="settings-page__section">
         <h2>Appearance</h2>
         <p>Choose how the app looks.</p>
         <button
@@ -109,7 +109,7 @@ export default function SettingsPage() {
         </button>
       </section>
 
-      <section className="settings-page__section">
+            <section id="tour-settings-tts" className="settings-page__section">
         <h2>Text-to-Speech Language</h2>
         <label htmlFor="tts-language-select">Choose the voice language</label>
         <select id="tts-language-select" value={ttsLanguage} onChange={handleLanguageChange}>
@@ -121,7 +121,7 @@ export default function SettingsPage() {
         </select>
       </section>
 
-      <section className="settings-page__section">
+            <section id="tour-settings-search-style" className="settings-page__section">
         <h2>PEC Card Search Style</h2>
         <p>Choose how you'd like to find picture cards when selecting one.</p>
         <div className="settings-page__radio-group">
@@ -179,7 +179,7 @@ export default function SettingsPage() {
       </section>
 
       {(isFamilyAccount || isSchoolAccount || !hasFamily) && (
-        <section className="settings-page__section">
+                <section id="tour-settings-device-pairing" className="settings-page__section">
           <h2>Device Pairing</h2>
           {hasFamily ? (
             <p role="status">

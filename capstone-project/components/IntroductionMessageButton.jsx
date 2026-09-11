@@ -136,7 +136,8 @@ export default function IntroductionMessageButton() {
 
   return (
     <div className="intro-message">
-      <button
+         <button
+        id="tour-intro-button"
         type="button"
         className="intro-message__speak-button"
         onClick={speak}

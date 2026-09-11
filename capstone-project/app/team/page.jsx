@@ -59,8 +59,8 @@ export default function TeamPage() {
           </p>
            <p>
             📎 LinkedIn:{" "}
-            <a href="https://www.linkedin.com/in/elizabeth-crose/" target="_blank" rel="noopener noreferrer">
-              linkedin.com/in/elizabeth-crose
+            <a href="https://www.linkedin.com/in/elizabethcrose/" target="_blank" rel="noopener noreferrer">
+              linkedin.com/in/elizabethcrose
             </a>
           </p>
         </div>

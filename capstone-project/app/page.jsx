@@ -15,7 +15,7 @@ export default function HomePage() {
     <main className="home-page">
       <h1 className="home-page__title">Choose a Category</h1>
 
-      <div className="home-page__grid" role="list">
+      <div id="tour-category-grid" className="home-page__grid" role="list">
         {CATEGORIES.map((category) => (
           <Link
             key={category.id}
